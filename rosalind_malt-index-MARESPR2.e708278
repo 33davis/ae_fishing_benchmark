@@ -1,0 +1,47 @@
+Lmod has detected the following error: These module(s) exist but cannot be
+loaded as requested: "adapterremoval"
+   Try: "module spider adapterremoval" to see how to load the module(s).
+
+
+
+MaltBuild - Builds an index for MALT (MEGAN alignment tool)
+Options:
+Input:
+	--input: /data/imas_projects/ancient/share/Databases/MARES_BAR_PR2v5_20240216.fasta.gz
+	--sequenceType: DNA
+Output:
+	--index: /data/imas_projects/ancient/share/Indices_malt/MARES_BAR_PR2v5_20240216
+Performance:
+	--threads: 16
+	--step: 1
+Seed:
+	--shapes: default
+	--maxHitsPerSeed: 1000
+Classification support:
+Deprecated classification support:
+	--parseTaxonNames: true
+	--noFun: false
+Other:
+	--firstWordIsAccession: true
+	--accessionTags: gb| ref|
+	--firstWordOnly: false
+	--random: 666
+	--hashScaleFactor: 0.9
+	--buildTableInMemory: true
+	--extraStrict: false
+	--verbose: true
+Version   MALT (version 0.6.2, built 12 Sep 2023)
+Author(s) Daniel H. Huson
+Copyright (C) 2023 Daniel H. Huson. This program comes with ABSOLUTELY NO WARRANTY.
+Java version: 20.0.2; max memory: 64G
+Reference sequence type set to: DNA
+Seed shape(s): 111110111011110110111111
+Caught:
+java.io.IOException: mkdir failed: /data/imas_projects/ancient/share/Indices_malt/MARES_BAR_PR2v5_20240216
+	at malt/malt.MaltBuild.run(MaltBuild.java:245)
+	at malt/malt.MaltBuild.main(MaltBuild.java:64)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:578)
+	at com.install4j.runtime/com.exe4j.runtime.LauncherEngine.launch(LauncherEngine.java:84)
+	at com.install4j.runtime/com.install4j.runtime.launcher.UnixLauncher.start(UnixLauncher.java:71)
+	at install4j.malt.MaltBuild.main(Unknown Source)

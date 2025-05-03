@@ -1,0 +1,448 @@
+Jan 22, 2025 1:29:40 PM HOPS_Main main
+INFO: All Parameters:
+ -i /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_8h2.rma6
+-o /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/HOPS_mepo_results/
+--configFile /u/davisee/Scratch/scripts/configFile.txt
+-m ME_PO
+Jan 22, 2025 1:29:40 PM HOPS_Main main
+INFO: Process Config File
+Jan 22, 2025 1:29:40 PM Utility.ParameterProcessor process
+INFO: Use default MaltExtract verion 1.7
+Jan 22, 2025 1:29:40 PM Utility.ParameterProcessor processMALTExtractParameters
+INFO: Use default top value of 0.01
+Jan 22, 2025 1:29:40 PM Utility.ParameterProcessor processMALTExtractParameters
+INFO: Set maximum Memory for MaltExtact to 990 GB
+Jan 22, 2025 1:29:40 PM Utility.ParameterProcessor processMALTExtractParameters
+INFO: Set Partition for MaltExtract to medium
+Jan 22, 2025 1:29:40 PM Utility.ParameterProcessor process
+INFO: Using Default PostProcessing script
+Jan 22, 2025 1:29:40 PM Utility.ParameterProcessor processPostProcessingParameters
+INFO: Using short Parition for Postprocessing
+Jan 22, 2025 1:29:40 PM Utility.ParameterProcessor processPostProcessingParameters
+INFO: Set wallTime to 1:00:00
+Jan 22, 2025 1:29:40 PM Utility.ParameterProcessor processPostProcessingParameters
+INFO: Set strict damage to false
+Jan 22, 2025 1:29:40 PM Utility.ParameterProcessor processPostProcessingParameters
+INFO: Set display all to false
+Jan 22, 2025 1:29:40 PM HOPS_Main main
+INFO: Run Mode ME_PO
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: MaltExtract -Xmx990G --filter def_anc -i /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_8h2.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_1h1.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_2h6.rma6 /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_8h2.rma6 -o /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/HOPS_mepo_results/maltExtract/ -p 32 -t /u/davisee/Scratch/HOPS_taxalist_euks.txt --resources /data/imas_projects/ancient/share/HOPS_resources/ --top 0.01 -minPI 90.0 --meganSummary --destackingOff 
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Input Set to: 
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_1h1.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_2h6.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_8h2.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_1h1.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_2h6.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_8h2.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_1h1.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_2h6.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_8h2.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_1h1.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_2h6.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_8h2.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_1h1.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_2h6.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_8h2.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_1h1.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_2h6.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_8h2.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_1h1.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_2h6.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_8h2.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_1h1.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_2h6.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_8h2.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Output Directory set to: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/HOPS_mepo_results/maltExtract/
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Taxon File: 
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: /u/davisee/Scratch/HOPS_taxalist_euks.txt
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Trying to use 32 threads
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Using 32 threads
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Custom Behaviour set to: def_anc
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Top Percent value set to: 0.01
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor process
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Minimum pIdent set to 90.0
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM utility.InputParameterProcessor GetParameters
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: MaltExtract Version 1.7
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM RMAExtractor.RMAExtractor main
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: MaltExtract 1.7
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --input /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_1h1.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_2h6.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_8h2.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_1h1.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_2h6.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_8h2.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_1h1.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_2h6.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_8h2.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_1h1.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_2h6.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_8h2.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_1h1.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_2h6.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_8h2.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_1h1.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_2h6.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_8h2.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_1h1.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_2h6.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_8h2.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_1h1.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_2h6.rma6/scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_8h2.rma6
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --taxa Eukaryota
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --output /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/HOPS_mepo_results/maltExtract/
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --filter def_anc
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --top 0.01
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --maxLength 0
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --minPI 90.0
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --resources /data/imas_projects/ancient/share/HOPS_resources/
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --threads 32
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --meganSummary 
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: --destackingOff 
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: 
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:41 PM RMAExtractor.RMAExtractor main
+Jan 22, 2025 1:29:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Setting up Taxon Name and Taxon ID maps
+Jan 22, 2025 1:29:53 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:53 PM RMAExtractor.RMAExtractor main
+Jan 22, 2025 1:29:53 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Setting up Phylogenetic Tree
+Jan 22, 2025 1:29:53 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:53 PM RMAExtractor.RMAExtractor main
+Jan 22, 2025 1:29:53 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Using 32cores
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_2h6.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_8h2.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_2h6.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_8h2.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_2h6.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_8h2.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_1h1.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n100_8h2.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n2500_1h1.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_2h6.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n1000_1h1.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n250_1h1.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMAExtractor.RMAExtractor main
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished Processing RMA6 files
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_8h2.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_2h6.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n50_1h1.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_8h2.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_2h6.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n500_1h1.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_8h2.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_2h6.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_8h2.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n5000_1h1.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_1h1.rma6
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:29:54 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:29:54 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Reading File: /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/n25_2h6.rma6
+Jan 22, 2025 1:30:18 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:18 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:18 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n25_8h2.rma6
+Jan 22, 2025 1:30:18 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:18 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:18 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n25_2h6.rma6
+Jan 22, 2025 1:30:19 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:19 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:19 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n50_8h2.rma6
+Jan 22, 2025 1:30:20 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:20 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:20 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n25_1h1.rma6
+Jan 22, 2025 1:30:21 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:21 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:21 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n50_1h1.rma6
+Jan 22, 2025 1:30:21 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:21 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:21 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n50_2h6.rma6
+Jan 22, 2025 1:30:22 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:22 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:22 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n100_8h2.rma6
+Jan 22, 2025 1:30:22 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:22 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:22 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n100_2h6.rma6
+Jan 22, 2025 1:30:22 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:22 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:22 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n100_1h1.rma6
+Jan 22, 2025 1:30:31 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:31 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:31 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n250_8h2.rma6
+Jan 22, 2025 1:30:31 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:31 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:31 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n250_1h1.rma6
+Jan 22, 2025 1:30:32 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:32 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:32 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n250_2h6.rma6
+Jan 22, 2025 1:30:41 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:41 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:41 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n500_8h2.rma6
+Jan 22, 2025 1:30:42 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:42 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:42 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n500_2h6.rma6
+Jan 22, 2025 1:30:43 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:30:43 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:30:43 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n500_1h1.rma6
+Jan 22, 2025 1:31:01 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:31:01 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:31:01 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n1000_8h2.rma6
+Jan 22, 2025 1:31:01 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:31:01 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:31:01 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n1000_1h1.rma6
+Jan 22, 2025 1:31:02 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:31:02 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:31:02 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n1000_2h6.rma6
+Jan 22, 2025 1:31:57 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:31:57 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:31:57 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n2500_8h2.rma6
+Jan 22, 2025 1:32:01 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:32:01 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:32:01 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n2500_2h6.rma6
+Jan 22, 2025 1:32:05 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:32:05 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:32:05 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n2500_1h1.rma6
+Jan 22, 2025 1:33:24 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:33:24 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:33:24 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n5000_2h6.rma6
+Jan 22, 2025 1:33:28 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:33:28 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:33:28 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n5000_1h1.rma6
+Jan 22, 2025 1:33:30 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:33:30 PM RMA6Processor.RMA6Processor process
+Jan 22, 2025 1:33:30 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Finished File: n5000_8h2.rma6
+Jan 22, 2025 1:33:30 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:33:30 PM RMAExtractor.RMAExtractor main
+Jan 22, 2025 1:33:30 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Writing Summary File
+Jan 22, 2025 1:33:30 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:33:30 PM RMAExtractor.RMAExtractor main
+Jan 22, 2025 1:33:30 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Runtime: 3 Minutes
+Jan 22, 2025 1:33:30 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:33:30 PM RMAExtractor.RMAExtractor main
+Jan 22, 2025 1:33:30 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Peak memory: 98.7 of 880.0G
+Jan 22, 2025 1:33:30 PM ProcessManagement.ProcessExecutor run
+INFO: Jan 22, 2025 1:33:30 PM RMAExtractor.RMAExtractor main
+Jan 22, 2025 1:33:30 PM ProcessManagement.ProcessExecutor run
+INFO: INFO: Shutdown
+Jan 22, 2025 1:33:41 PM ProcessManagement.ProcessExecutor run
+INFO: Process Exited with status: 0
+Jan 22, 2025 1:33:41 PM ProcessManagement.ProcessExecutor run
+INFO: postprocessing.AMPS.r -m def_anc -r /scratch/davisee/synthetic_files/fq_input/iter_fq2_combo/18_09_2024/HOPS_mepo_results/maltExtract/ -t 32 -n /u/davisee/Scratch/HOPS_taxalist_euks.txt 
+Jan 22, 2025 1:33:41 PM ProcessManagement.ProcessExecutor run
+INFO: During startup - Warning messages:
+Jan 22, 2025 1:33:41 PM ProcessManagement.ProcessExecutor run
+INFO: 1: Setting LC_CTYPE failed, using "C" 
+Jan 22, 2025 1:33:41 PM ProcessManagement.ProcessExecutor run
+INFO: 2: Setting LC_COLLATE failed, using "C" 
+Jan 22, 2025 1:33:41 PM ProcessManagement.ProcessExecutor run
+INFO: 3: Setting LC_TIME failed, using "C" 
+Jan 22, 2025 1:33:41 PM ProcessManagement.ProcessExecutor run
+INFO: 4: Setting LC_MESSAGES failed, using "C" 
+Jan 22, 2025 1:33:41 PM ProcessManagement.ProcessExecutor run
+INFO: 5: Setting LC_MONETARY failed, using "C" 
+Jan 22, 2025 1:33:41 PM ProcessManagement.ProcessExecutor run
+INFO: 6: Setting LC_PAPER failed, using "C" 
+Jan 22, 2025 1:33:41 PM ProcessManagement.ProcessExecutor run
+INFO: 7: Setting LC_MEASUREMENT failed, using "C" 
+Jan 22, 2025 1:33:42 PM ProcessManagement.ProcessExecutor run
+INFO: Read 1 item
+Jan 22, 2025 1:33:42 PM ProcessManagement.ProcessExecutor run
+INFO: null device 
+Jan 22, 2025 1:33:42 PM ProcessManagement.ProcessExecutor run
+INFO:           1 
+Jan 22, 2025 1:33:45 PM ProcessManagement.ProcessExecutor run
+INFO: Process Exited with status: 0
+Jan 22, 2025 1:33:45 PM HOPS_Main main
+INFO: HOPS run submitted to slurm!

@@ -1,0 +1,73 @@
+#!/usr/bin/bash -l
+#PBS -N kddm2_memtesting_onesample
+#PBS -M emily.davis@utas.edu.au
+# Send mail for (a)borted, (b)eginning and (e)nd job
+#PBS -m abe
+# Select 2 nodes: 28 cpus per node
+#PBS -l select=1:ncpus=1:mem=129
+# Allow the job to run for up to 24 hours
+#PBS -l walltime=24:00:00
+# force the job to a specific queue
+####PBS -q [destination queue]
+
+
+
+## BEGIN SCRIPT
+cd ~
+date # Print the current time and date to standard output (so you can see when the job started)
+
+#################### modules #####################
+module load rosalind/1.0
+module load GCCcore/6.4.0
+module load rosalind komplexity bbtools megan
+
+
+# Navigate to directory containing collapsed sample files
+cd /u/davisee/Scratch/synthetic_files/input_fa/combo_input
+
+
+# Create new directory to input all results
+################## define run variables #############
+d=$(date +"%d_%m_%Y")
+#current stucture requires database to be in Scracth folder, easily fixed in MALT -d flag 
+database="MARES_BAR_PR2v5_20240216"
+align="MALT"
+new_directory="/u/davisee/Scratch/synthetic_files/input_fa/combo_input/$d-$database"
+mkdir "$new_directory"
+
+############## Komplexity #####################
+#for sample in *.collapsed; do kz --filter --threshold 0.55 < "$sample" > "$sample.kx"; done
+
+# Move komplexity results to new directory
+mv  "/u/davisee/Scratch/synthetic_files/input_fa/combo_input/IODP_8h2_combo.fq.kx" "$new_directory/"
+
+################## Dedupe ######################
+cd -- "$new_directory"
+do dedupe.sh in=IODP_8h2_combo.fq.kx out=IODP_8h2_combo.fq.kx outd=IODP_8h2_combo.fq.kx ac=f
+
+# Navigate to MALT directory
+cd /u/davisee/miniconda2/pkgs/malt-0.62-hdfd78af_0/bin
+export PATH="/u/davisee/miniconda2/pkgs/malt-0.62-hdfd78af_0/bin:$PATH"
+
+################ Run MALT ########################
+./malt-run -i "$new_directory"/IODP_8h2_combo.fq.kx-dd.gz -a "$new_directory" -ou "$new_directory" -at SemiGlobal -f Text -d "/u/davisee/Scratch/$database/" -mem load --mode BlastN -t 8 -v
+
+################ Blast2RMA #######################
+module load parallel/20210622-GCCcore-10.3.0
+input="$new_directory"
+ms=50
+me=0.01
+supp=0
+mpi=90
+
+blast2rma -r IODP_8h2_combo.fq.kx-dd.gz -i IODP_8h2_combo.fq.blastn.gz -o "$input" -v -ms $ms -me $me -f BlastText -supp $supp -mpi $mpi -alg weighted -lcp 90| parallel -j 2 --delay 6
+
+#ve post Blast2RMA results to subdirectory
+mkdir "$new_directory/$align"
+mv "$new_directory"/*.rma6 "$new_directory/$align/"
+mv "$new_directory"/*.blastn.gz "$new_directory/$align/"
+
+module purge
+
+#END OF SCRIPT
+

@@ -1,0 +1,695 @@
+####### older code, newer code below, this is still here for checking purposes #####
+# Load necessary packages
+library(dplyr)
+library(data.table)
+
+#### Define the function
+# process_fasta_files <- function(file_directory, output_directory = NULL) {  #### currenlty have an issue here
+#   # List all FASTA files in the specified folder
+#   fasta_files <- list.files(path = file_directory, pattern = "\\.fasta$", full.names = TRUE)
+#   
+#   # Initialize a list to store data for each file
+#   fasta_data <- list()
+#   
+#   # Loop through each FASTA file and extract data
+#   for (file in fasta_files) {
+#     # Read the FASTA file
+#     fasta_content <- readLines(file)
+#     
+#     # Check if the file contains any FASTA headers (lines starting with ">")
+#     if (length(fasta_content) == 0 || !any(grepl("^>", fasta_content))) {
+#       # Skip files with no content or no FASTA headers
+#       message(paste("Skipping file:", file, "- No FASTA content found"))
+#       next
+#     }
+#     
+#     # Extract read names (lines starting with ">")
+#     read_names <- fasta_content[grepl("^>", fasta_content)]
+#     
+#     # Remove the ">" from the read names
+#     read_names <- gsub("^>", "", read_names)
+#     
+#     # Create a data.table for the current file
+#     temp_dt <- data.table(
+#       read_name = read_names,
+#       file_name = basename(file) # Only the file name, not the full path
+#     )
+#     
+#     # Add the data.table to the list
+#     fasta_data[[file]] <- temp_dt
+#   }
+#   
+#   # Combine all data.tables into one
+#   if (length(fasta_data) > 0) {
+#     combined_data <- rbindlist(fasta_data)
+#     
+#     # Clean the read_name column to remove information past "."
+#     combined_data[, read_name := gsub("\\..*", "", read_name)]
+#     
+#     # Extract assignment read_name from file_name:
+#     # Take everything between "reads-" and ".fasta"
+#     combined_data[, assignment_read_name := sub(".*reads-(.*)\\.fasta.*", "\\1", file_name)]
+#     
+#     # Create a summary table to count the number of assignments of each read_name in respect to assignment_read_name
+#     summary_table <- combined_data %>%
+#       group_by(assignment_read_name, read_name) %>%
+#       group_by(assignment_read_name, read_name) %>%
+#       mutate(file_name = paste0(file_directory), file_name) #%>%
+#       #summarize(read_count = n(), .groups = "drop")
+#     
+#     # Handle output directory
+#     if (is.null(output_directory)) {
+#       output_directory <- file_directory
+#     }
+#     if (!dir.exists(output_directory)) {
+#       dir.create(output_directory, recursive = TRUE)
+#     }
+#     
+#     # Define the output file name based on the output directory
+#     output_file <- file.path(output_directory, paste0(basename(file_directory), "_summary_table.csv"))
+#     
+#     # Write the summary table to a CSV file
+#     write.csv(summary_table, output_file, row.names = FALSE)
+#     
+#     message(paste("Summary table saved to:", output_file))
+#     return(summary_table)
+#   } else {
+#     message("No valid FASTA files found in the directory.")
+#     return(NULL)
+#   }
+# }
+######### process extracted fasta files from MEGAN CE reads-extractedtaxa.fasta ########
+library(dplyr)
+library(data.table)
+library(ggplot2)
+
+process_fasta_files <- function(file_directory, output_directory = NULL) {  
+  # List all FASTA files in the specified folder
+  fasta_files <- list.files(path = file_directory, pattern = "\\.fasta$", full.names = TRUE)
+  
+  # Initialize a list to store data for each file
+  fasta_data <- list()
+  
+  # Loop through each FASTA file and extract data
+  for (file in fasta_files) {
+    # Read the FASTA file
+    fasta_content <- readLines(file)
+    
+    # Check if the file contains any FASTA headers (lines starting with ">")
+    if (length(fasta_content) == 0 || !any(grepl("^>", fasta_content))) {
+      message(paste("Skipping file:", file, "- No FASTA content found"))
+      next
+    }
+    
+    # Extract read names (lines starting with ">"), removing ">"
+    read_names <- gsub("^>", "", fasta_content[grepl("^>", fasta_content)])
+    
+    # Create a data.table for the current file
+    temp_dt <- data.table(
+      read_name = read_names,
+      file_name = basename(file)  # Extract filename only
+    )
+    
+    # Add the data.table to the list
+    fasta_data[[file]] <- temp_dt
+  }
+  
+  # Combine all data.tables into one
+  if (length(fasta_data) > 0) {
+    combined_data <- rbindlist(fasta_data)
+    
+    # Remove everything after the first `.` in `read_name`, if applicable
+    combined_data[, read_name := gsub("\\..*", "", read_name)]
+    
+    # Extract assignment_read_name from file_name (update regex as needed)
+    combined_data[, assignment_read_name := sub(".*reads-([^.]+)\\.fasta.*", "\\1", file_name)]
+    
+    # Create a summary table with counts
+    summary_table <- combined_data %>%
+      group_by(assignment_read_name, read_name) %>%
+      summarize(read_count = n(), .groups = "drop") %>%
+      mutate(file_name = file_directory)
+    
+    # Handle output directory
+    if (is.null(output_directory)) {
+      output_directory <- file_directory
+    }
+    if (!dir.exists(output_directory)) {
+      dir.create(output_directory, recursive = TRUE)
+    }
+    
+    # Define output file name
+    output_file <- file.path(output_directory, paste0(basename(file_directory), "_summary_table.csv"))
+    
+    # Write the summary table to a CSV file
+    write.csv(summary_table, output_file, row.names = FALSE)
+    
+    message(paste("Summary table saved to:", output_file))
+    return(summary_table)
+  } else {
+    message("No valid FASTA files found in the directory.")
+    return(NULL)
+  }
+}
+
+# Example usage:
+# summary_table <- process_fasta_files(
+#   file_directory = "C:/path/to/input/files",
+#   output_directory = "C:/path/to/output/directory"
+# )
+
+
+### currently is not set up to deal with multiple subdirectories, such as the deamination treatment folders within each subdirectory
+### double check that working directory is set, otherwise you WILL get an error
+main_directory <-"C:/Users/davisee/OneDrive - University of Tasmania/Documents/Bioinformatics_Documentation/upscale_runs/newparams/all_spiked_extracted/n5000"
+setwd("C:/Users/davisee/OneDrive - University of Tasmania/Documents/Bioinformatics_Documentation/upscale_runs/newparams/all_spiked_extracted/n5000")
+folder_names <- list.dirs(path = main_directory, full.names = FALSE, recursive = FALSE)
+folder_names
+
+for (folder in folder_names) {
+  ## message which folder is being processed: 
+  message(paste("This folder is being processed:", folder))
+  
+process_fasta_files(
+  file_directory = folder,
+  output_directory = "n5000")
+}
+message("completed processing folders")
+
+
+############ putting all of the new csv files together to view the data #########
+#establish parent csv directory, output directory created above
+# Load required package
+library(dplyr) # for bind_rows (optional but robust for varied structures)
+
+# Define the function
+merge_csv_files <- function(csv_directory, pattern = "\\.csv$", output_file = NULL) {
+  # Step 1: List all CSV files in the directory
+  csv_files <- list.files(path = csv_directory, pattern = pattern, full.names = TRUE)
+  
+  # Check if any files are found
+  if (length(csv_files) == 0) {
+    stop("No CSV files found in the directory with the specified pattern.")
+  }
+  
+  # Step 2: Read each file and store in a list
+  csv_data <- lapply(csv_files, read.csv)
+  
+  # Step 3: Combine all data frames into one
+  merged_data <- bind_rows(csv_data) # dplyr's bind_rows handles inconsistent column orders
+  
+  # Step 4: Save to output file if specified
+  if (!is.null(output_file)) {
+    write.csv(merged_data, file = output_file, row.names = FALSE)
+    message(paste("Merged data saved to:", output_file))
+  }
+  
+  # Step 5: Return the merged data
+  return(merged_data)
+}
+
+csv_dir <- "C:/Users/davisee/OneDrive - University of Tasmania/Documents/Bioinformatics_Documentation/upscale_runs/newparams/all_spiked_extracted/n1000/n1000"
+output_file <- "C:/Users/davisee/OneDrive - University of Tasmania/Documents/Bioinformatics_Documentation/upscale_runs/newparams/all_spiked_extracted/n1000/summary_n1000.csv"
+
+merged_n1000_data <- 
+  merge_csv_files(
+  csv_directory = csv_dir, 
+  pattern = "\\.csv$", 
+  output_file = output_file
+)
+##################### function to merge all created  summary csv files from parent directory ##############################
+
+library(dplyr)
+library(data.table)
+
+merge_csv_files <- function(parent_directory, output_file = "merged_all.csv") {
+  # Define allowed folder names
+  valid_folders <- c("n10", "n25", "n50", "n100", "n250", "n500", "n1000", "n2500", "n5000")
+  
+  # Get list of subdirectories
+  subdirs <- list.dirs(parent_directory, recursive = FALSE)
+  subdirs <- subdirs[basename(subdirs) %in% valid_folders]  # Keep only valid folders
+  
+  # Initialize a list to store data
+  csv_data <- list()
+  
+  # Loop through each valid folder and check for merged_n$.csv
+  for (subdir in subdirs) {
+    # Construct the expected file name based on folder name
+    folder_name <- basename(subdir)
+    csv_file <- file.path(subdir, paste0("summary_", folder_name, ".csv"))
+    
+    # Read and store the file if it exists
+    if (file.exists(csv_file)) {
+      temp_data <- fread(csv_file)  # Read CSV efficiently
+      temp_data[, folder_name := folder_name]  # Add folder info
+      csv_data[[folder_name]] <- temp_data
+    } else {
+      message(paste("Skipping:", csv_file, "- File not found"))
+    }
+  }
+  
+  # Combine all data.tables if any files were found
+  if (length(csv_data) > 0) {
+    merged_data <- rbindlist(csv_data, fill = TRUE)
+    
+    # Save the merged file
+    fwrite(merged_data, file.path(parent_directory, output_file))
+    
+    message("Merged CSV saved to:", file.path(parent_directory, output_file))
+    return(merged_data)
+  } else {
+    message("No matching CSV files found in the specified folders.")
+    return(NULL)
+  }
+}
+
+# Example usage
+merge_csv_files("C:/Users/davisee/OneDrive - University of Tasmania/Documents/Bioinformatics_Documentation/upscale_runs/newparams/all_spiked_extracted")  # Change this to your actual directory
+
+######################## load in new summary csv files to do visualizations #########################################
+merged_data <- read.csv("summary_allsynthetic.csv") # used for the synthetic version 
+merged_combo_data <- read.csv("merged_all.csv")
+merged_combo_data <- merged_combo_data %>% 
+  rename("assignment_level" = "assignment_read_name") ## will make consistent with previous code
+
+################ Do some preliminary synthetic data factoring ###################
+merged_data <- merged_data %>% 
+  mutate(file_name = factor(file_name, 
+      levels = c("n10_nodeam", "n10_lowdeam", 
+                "n10_middledeam", "n10_highdeam", "n10_deam", 
+                "n25_nodeam", "n25_lowdeam", 
+                "n25_middledeam", "n25_highdeam", "n25_deam", 
+                "n50_nodeam", "n50_lowdeam",
+                "n50_middledeam", "n50_highdeam", "n50_deam", 
+                "n100_nodeam", "n100_lowdeam", 
+                "n100_middledeam", "n100_highdeam", "n100_deam",
+                "n250_nodeam", "n250_lowdeam", 
+                "n250_middledeam", "n250_highdeam", "n250_deam", 
+                "n500_nodeam", "n500_lowdeam", 
+                "n500_middledeam", "n500_highdeam", "n500_deam", 
+                "n1000_nodeam", "n1000_lowdeam", 
+                "n1000_middledeam", "n1000_highdeam", "n1000_deam", 
+                "n2500_nodeam", "n2500_lowdeam", 
+                "n2500_middledeam", "n2500_highdeam", "n2500_deam", 
+                "n5000_nodeam", "n5000_lowdeam", 
+                "n5000_middledeam", "n5000_highdeam", "n5000_deam"))) 
+merged_data$read_name <- factor(merged_data$read_name, unique(merged_data$read_name))
+
+### combined IODP + synthetic data version preliminary factoring #####
+merged_combo_data <- merged_combo_data %>% 
+  mutate(file_name = factor(file_name, 
+                            levels = c("n10_lowdeam", "n10_middledeam", "n10_highdeam",  
+                                      "n25_lowdeam", "n25_middledeam", "n25_highdeam",
+                                      "n50_lowdeam","n50_middledeam", "n50_highdeam",  
+                                      "n100_lowdeam", "n100_middledeam", "n100_highdeam",
+                                      "n250_lowdeam", "n250_middledeam", "n250_highdeam",
+                                      "n500_lowdeam", "n500_middledeam", "n500_highdeam",
+                                      "n1000_lowdeam", "n1000_middledeam", "n1000_highdeam",
+                                      "n2500_lowdeam", "n2500_middledeam", "n2500_highdeam",
+                                      "n5000_lowdeam", "n5000_middledeam", "n5000_highdeam")))
+merged_combo_data$read_name <- factor(merged_combo_data$read_name, unique((merged_combo_data$read_name)))
+
+############ exploratory analysis to understand outputs 
+S_reads <- merged_combo_data %>%
+  filter(read_name %in% c("AF518190","KP875235"))
+
+S_reads %>% filter(read_count > 0) %>% 
+ggplot(aes(assignment_level, fill =read_name)) + 
+  geom_bar(position = "dodge")+ 
+  theme_minimal() +
+  theme(legend.position = "bottom", 
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8), 
+        legend.key.width = unit(0.5, "cm"),
+        legend.spacing.x = unit(0.2, 'cm'),
+        axis.text.x = element_text(size = 7, angle = 90))
+
+coi_reads <- merged_combo_data %>%
+  filter(!read_name %in% c("AF518190","KP875235"))
+
+coi_reads %>% filter(read_count > 0 ) %>% 
+ggplot(aes(read_name, fill = assignment_level)) + 
+  geom_bar(position = "dodge")+ 
+  theme_minimal() +
+  theme(legend.position = "bottom", 
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8), 
+        legend.key.width = unit(0.5, "cm"),
+        legend.spacing.x = unit(0.2, 'cm'),
+        axis.text.x = element_text(size = 7, angle = 90))
+
+
+########################## rework for combined IODP + synthetic analysis ##################
+all_assignment <- merged_combo_data %>% 
+  group_by(assignment_level, read_name, file_name) %>%
+  mutate(read_count = n())
+
+all_assignment <- merged_combo_data %>%
+  group_by(assignment_level, read_name, file_name) %>%
+  summarise(read_count = sum(read_count), .groups = "drop")  # Sum read counts instead of recounting
+
+View(all_assignment)
+
+##################### harpagifer antarcticus 18s v. COI #######################
+ha_reads <- all_assignment %>%
+  filter(read_name %in% c("AF518190", "ON891147")) %>%
+  mutate(read_name = case_when(
+    read_name == "AF518190" ~ "18S - AF518190",
+    read_name == "ON891147" ~ "COI - ON891147",
+    TRUE ~ read_name # In case of any other values, retain them unchanged
+  ))
+
+## review plot of 
+ha_reads %>%
+  #filter(read_name == "18S - AF518190") %>%
+  #filter(read_name == "COI - ON891147") %>% 
+ggplot(aes(assignment_level, file_name, fill = read_count)) + 
+  geom_tile()+
+  scale_fill_gradient(low = "purple", high = "yellow")+
+  facet_wrap(~read_name, scales = "free")+ 
+  theme_minimal() +
+  theme(legend.position = "bottom", 
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8), 
+        legend.key.width = unit(0.5, "cm"),
+        legend.spacing.x = unit(0.2, 'cm'),
+        axis.text.x = element_text(size = 7, angle = 90, hjust = 1))+ 
+  labs(
+    x = "MALT Taxonomic Assignment", 
+    y = "Damage and Fragment Input Run", 
+    title = "Harpagifer antarcticus - 18S vs. COI taxonomic assignment"
+   # title = "Harpagifer antarcticus - 18S taxonomic assignment"
+    #title = "Harpagifer antarcticus - COI taxonomic assignment"
+  )
+
+########### testing different heatmap styles,including nested// combined graphs, not being used #####
+# # Subset data for each read_name
+# install.packages("patchwork")
+# library(patchwork)
+
+# # Plot for 18S
+# plot_18S <- ggplot(ha_reads_18S, aes(assignment_level, file_name, fill = read_count)) +
+#   geom_tile() +
+#   scale_fill_gradient(low = "purple", high = "yellow") +
+#   theme_minimal() +
+#   theme(
+#     legend.position = "bottom", 
+#     legend.text = element_text(size = 6), 
+#     legend.title = element_text(size = 8), 
+#     axis.text.x = element_text(size = 7, angle = 90)
+#   ) +
+#   labs(
+#     x = "MALT Taxonomic Assignment",
+#     y = "Damage and Fragment Input Run",
+#     title = "18S - Harpagifer antarcticus"
+#   )
+# 
+# # Plot for COI
+# plot_COI <- ggplot(ha_reads_COI, aes(assignment_level, file_name, fill = read_count)) +
+#   geom_tile() +
+#   scale_fill_gradient(low = "blue", high = "green") + # Different color scale
+#   theme_minimal() +
+#   theme(
+#     legend.position = "bottom", 
+#     legend.text = element_text(size = 6), 
+#     legend.title = element_text(size = 8), 
+#     axis.text.x = element_text(size = 7, angle = 90)
+#   ) +
+#   labs(
+#     x = "MALT Taxonomic Assignment",
+#     y = "Damage and Fragment Input Run",
+#     title = "COI - Harpagifer antarcticus"
+#   )
+# 
+# # Combine plots using patchwork
+# plot_18S + plot_COI
+# 
+# 
+
+library(ggnewscale)
+
+# Create a combined heatmap with nested color scales
+ggplot() +
+  # Plot for 18S
+  geom_tile(
+    data = ha_reads %>% filter(read_name == "18S - AF518190"),
+    aes(x = assignment_level, y = file_name, fill = read_count)
+  ) +
+  scale_fill_gradient(name = "18S Read Count", low = "purple", high = "yellow") +
+  
+  # Add a new scale for COI
+  new_scale_fill() +
+  
+  # Plot for COI
+  geom_tile(
+    data = ha_reads %>% filter(read_name == "COI - ON891147"),
+    aes(x = assignment_level, y = file_name, fill = read_count)
+  ) +
+  scale_fill_gradient(name = "COI Read Count", low = "skyblue", high = "red") +
+  
+  # Common theme and labels
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 6),
+    legend.title = element_text(size = 8),
+    legend.key.width = unit(0.5, "cm"),
+    legend.spacing.x = unit(0.2, 'cm'),
+    axis.text.x = element_text(size = 7, angle = 90)
+  ) +
+  labs(
+    x = "MALT Taxonomic Assignment",
+    y = "Damage and Fragment Input Run",
+    title = "Combined Heatmap: 18S and COI Taxonomic Assignments"
+  )
+
+#################################### pygosclis antarcticus 18S v. COI ##################################
+pa_reads <- all_assignment %>%
+  filter(read_name %in% c("KP875235", "EU525471")) %>%
+  mutate(read_name = case_when(
+    read_name == "KP875235" ~ "18S - KP875235",
+    read_name == "EU525471"~ "COI - EU525471",
+    TRUE ~ read_name # In case of any other values, retain them unchanged
+  ))
+
+pa_reads %>%
+  #filter(read_name == "18S - KP875235") %>%
+  #filter(read_name == "COI - EU525471") %>% 
+ggplot(aes(assignment_level, file_name, fill = read_count)) + 
+  geom_tile()+
+  scale_fill_gradient(low = "purple", high = "yellow")+
+  facet_wrap(~read_name, scales = "free")+ 
+  theme_minimal() +
+  theme(legend.position = "bottom", 
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8), 
+        legend.key.width = unit(0.5, "cm"),
+        legend.spacing.x = unit(0.2, 'cm'),
+        axis.text.x = element_text(size = 7, angle = 90))+ 
+  labs(
+    x = "MALT Taxonomic Assignment", 
+    y = "Damage and Fragment Input Run", 
+    #title = "Pygoscelis antarcticus - 18S vs. COI taxonomic assignment"
+    #title = "Pygoscelis antarcticus - 18S taxonomic assignment"
+    title = "Pygoscelis antarcticus- COI taxonomic assignment"
+  )
+
+
+############################################# testing species_only assignment across all runs#############
+
+library(reshape2)
+
+all_assignment %>%
+  filter(read_count > 0 ) %>% 
+ggplot(aes(x = assignment_level, y = read_count, fill = read_name)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Stacked Bar Plot of Read Counts per Assignment level")
+
+
+ggplot(n10_assigment, aes(x = assignment_level, y = file_name, fill = read_count)) +
+  geom_tile() +
+  scale_fill_gradient(low = "purple", high = "blue") +
+  theme_minimal() +
+  theme(legend.position = "bottom", 
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8), 
+        legend.key.width = unit(0.5, "cm"),
+        legend.spacing.x = unit(0.2, 'cm'),
+        axis.text.x = element_text(size = 7, angle = 90))+
+  labs(title = "Heatmap of Read Counts by Assignment level and File Name")
+
+ggplot(n10_assigment, aes(x = assignment_level, y = read_name, fill = read_count)) +
+  geom_tile() +
+  scale_fill_gradient(low = "pink", high = "blue") +
+  theme_minimal() +
+  theme_minimal() +
+  theme(legend.position = "bottom", 
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8), 
+        legend.key.width = unit(0.5, "cm"),
+        legend.spacing.x = unit(0.2, 'cm'),
+        axis.text.x = element_text(size = 7, angle = 90))+
+  labs(title = "Heatmap of Read Counts Across Assignment levels")
+
+#################### look at species only assigments
+library(stringr)
+library(tidyr)
+
+species_assigment <- merged_data %>% 
+  filter(str_detect(assignment_level, "_")) %>%
+  filter(!assignment_level %in% c("cellular_organisms", "No_hits", "Not_assigned")) %>%
+  group_by(assignment_level, read_name, file_name) %>%
+  mutate(read_count = n())
+View(species_assigment)
+
+
+species_assigment <- merged_combo_data %>% 
+  filter(str_detect(assignment_level, "_")) %>%
+  filter(!assignment_level %in% c("cellular_organisms", "No_hits", "Not_assigned")) %>%
+  group_by(assignment_level, read_name, file_name) %>%
+  mutate(read_count = n())
+View(species_assigment)
+
+# # View the reshaped data
+# View(species_assigment_longer)
+# 
+# species_assigment_wider <- species_assigment %>%
+#   pivot_wider(
+#     names_from = read_name,            # Create new columns for each unique read_name
+#     values_from = read_count,          # The values to spread across the new columns
+#     values_fn = list(read_count = sum), # Aggregation function if multiple counts are present
+#     names_prefix = "read_name_"        # Add a prefix to the new column names for clarity
+#   ) %>%
+#   select(assignment_level, file_name, everything()) # Reorder to put assignment_level and file_name first
+# 
+# # View the reshaped data
+# View(species_assigment_wider)
+
+ggplot(species_assigment, aes(x = assignment_level, y = file_name, fill = read_count)) +
+  geom_tile() +
+  scale_fill_gradient(low = "purple", high = "blue") +
+  theme_minimal() +
+  theme(legend.position = "bottom", 
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8), 
+        legend.key.width = unit(0.5, "cm"),
+        legend.spacing.x = unit(0.2, 'cm'),
+        axis.text.x = element_text(size = 7, angle = 90))+
+  labs(title = "Heatmap of Read Counts by Assignment Taxa and Damage Treatment at Species Level")
+
+ggplot(species_assigment, aes(x = assignment_level, y = read_name, fill = read_count)) +
+  geom_tile() +
+  scale_fill_gradient(low = "pink", high = "blue") +
+  theme_minimal() +
+  theme_minimal() +
+  theme(legend.position = "bottom", 
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8), 
+        legend.key.width = unit(0.5, "cm"),
+        legend.spacing.x = unit(0.2, 'cm'),
+        axis.text.x = element_text(size = 7, angle = 90))+
+  labs(title = "Heatmap of Read Counts at Species level, n=10")
+
+
+#######################################################
+
+accession <- merged_data %>% 
+  filter(str_detect(assignment_level, "_")) %>%
+  filter(!assignment_level %in% c("cellular_organisms", "No_hits", "Not_assigned")) %>%
+  group_by(assignment_level, read_name, file_name) %>%
+  mutate(read_count = n())
+View(species_assigment)
+
+accession_combo <- merged_combo_data %>% 
+  filter(str_detect(assignment_level, "_")) %>%
+  filter(!assignment_level %in% c("cellular_organisms", "No_hits", "Not_assigned")) %>%
+  group_by(assignment_level, read_name, file_name) %>%
+  mutate(read_count = n())
+View(species_assigment)
+
+
+
+################## filtering and renaming accession numbers ############### 
+accession <- c("EU525299", "EU525303","OK493624",
+"EF609319","MW829388","ON000293",
+"FJ582589","FJ582593","MG739962",
+"MG740185","EU525360","ON891147",
+"AF518190","OL339430","ON891170",
+"ON891164","MK262211","MK261839",
+"EU525471","KP875235","OK493720",
+"OK493634"
+)
+
+all_assignment_combo_syn  <- all_assignment %>%
+  filter(read_name %in% accession) %>%
+  mutate(read_name = case_when(
+    read_name == "AF518190" ~ "18S - H. antarcticus",
+    read_name == "ON891147" ~ "COI - H. antarcticus",
+    read_name == "EU525299" ~ "Aptenodytes forsteri", 
+    read_name == "EU525303" ~ "Aptenodytes patagonicus",
+    read_name =="OK493624" ~ "Artedidraco lonnbergi",
+    read_name =="EF609319" ~ "Champsocephalus gunnari",
+    read_name =="MW829388" ~ "Dissostichus eleginoides",
+    read_name =="ON000293" ~ "Dissostichus mawsoni",
+    read_name =="FJ582589" ~ "Eudyptes chrysocome",
+    read_name =="FJ582593" ~ "Eudyptes chrysolophus",
+    read_name =="MG739962" ~ "Eudyptes filholi",
+    read_name =="MG740185" ~ "Eudyptes schlegeli",
+    read_name =="EU525360" ~ "Eudyptula minor",
+    read_name =="OL339430" ~ "Harpagifer bispinis",
+    read_name =="ON891170" ~ "Harpagifer geogianus",
+    read_name == "ON891164" ~ "Harpagifer kerguelensis",
+    read_name =="MK262211" ~ "Megadyptes antipodes",
+    read_name == "MK261839" ~ "Pygoscelis adeliae",
+    read_name =="EU525471" ~ "COI - P. antarcticus",
+    read_name =="KP875235" ~ "18S - P. antarcticus", 
+    read_name =="OK493720" ~ "Trematomus loennbergii",
+    read_name =="OK493634" ~ "Trematomus scotti",
+    TRUE ~ read_name # In case of any other values, retain them unchanged
+  ))
+
+################## try to create normalized read counts? #####################
+#### for synthetic only visualization normalized read counts ###### 
+all_assignment <- all_assignment %>% 
+  mutate(file_number = str_extract(file_name, "\\d+"))
+
+all_assignment_normal <- all_assignment %>% 
+  mutate(nor_read_count = read_count/as.numeric(file_number)) 
+
+ggplot(all_assignment_normal, aes(x = file_name, y = read_name, fill = nor_read_count)) +
+  geom_tile() +
+  scale_fill_gradient(low = "pink", high = "blue") +
+  #theme_minimal() +
+  theme_classic()+ 
+  theme(legend.position = "bottom", 
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8), 
+        legend.key.width = unit(0.5, "cm"),
+        legend.spacing.x = unit(0.2, 'cm'),
+        axis.text.x = element_text(size = 7, angle = 90))+
+  labs(title = "Heatmap of Normalised Read Counts across input accessions")
+
+########## combined visualization normalized read counts #########
+all_assignment_combo_test <- all_assignment_combo_syn %>% 
+  mutate(file_number = str_extract(file_name, "\\d+"))
+
+all_assignment_normal_combo <- all_assignment_combo_test %>% 
+  mutate(nor_read_count = read_count/as.numeric(file_number)) 
+
+ggplot(all_assignment_normal_combo, aes(x = file_name, y = read_name, fill = nor_read_count)) +
+  geom_tile() +
+  scale_fill_gradient(low = "pink", high = "blue") +
+  #theme_minimal() +
+  theme_classic()+ 
+  theme(legend.position = "bottom", 
+        legend.text = element_text(size = 6), 
+        legend.title = element_text(size = 8), 
+        legend.key.width = unit(0.5, "cm"),
+        legend.spacing.x = unit(0.2, 'cm'),
+        axis.text.x = element_text(size = 7, angle = 90))+
+  labs(title = "Heatmap of Normalised Read Counts across input accessions")
+
+

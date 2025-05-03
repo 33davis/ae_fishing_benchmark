@@ -1,0 +1,6 @@
+
+##check if .sh script has hidden characters
+cat -v 
+
+## if there is hidden characters, use this to 
+sed -i 's/\r//g' /\path/\to/\<filename>

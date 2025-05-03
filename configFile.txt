@@ -1,0 +1,59 @@
+#HOPS_mepo_ConfigFile_davisee
+###########
+
+#pre-processing, ie removing human reads#
+#########################################
+#preProcess=1
+
+### with conda download and setup, you do not need to specify path to MALT. MALTExtract, and HOPS
+
+####################
+#General Parameters#
+####################
+#MALT Parameters#
+#################
+#General MALT Parameters
+#threadsMalt=32
+#maxMemoryMalt=1500
+#index=/hpcfs/users/a1225211/malt-index/SILVA_132Ref_SSULSUcombi
+#id=90.0
+#mpi=90.0
+#m=BlastN
+#at=SemiGlobal
+#f=Text
+#topMalt=10
+#sup=0
+#supp=0
+#mq=100
+#memoryMode=load
+#verboseMalt=1
+#additionalMaltParameters=""
+
+#############
+#MALTExtract#
+#############
+threadsMaltEx=32
+maxMemoryMaltEx=990
+filter=def_anc
+pathToList=/u/davisee/Scratch/HOPS_taxalist_euks.txt
+resources=/data/imas_projects/ancient/share/HOPS_resources/
+topMaltEx=0.10
+#maxLengt=200
+minPIdent=90
+verboseMaltEx=1
+alignment=0
+reads=0
+#minComp=0.55
+meganSummary=1
+destackingOff=1
+dupRemOff=0
+downSampOff=0
+useTopAlignment=0
+
+################
+#PostProcessing#
+################
+threadsPost=32
+maxMemoryPost=990
+pathToList=/u/davisee/Scratch/HOPS_taxalist_euks.txt
+
