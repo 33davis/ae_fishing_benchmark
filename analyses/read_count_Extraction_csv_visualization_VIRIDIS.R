@@ -37,6 +37,31 @@ mytheme_test <- theme(
   # strip.background = element_rect(fill = "gray90", color = NA)
 )
 
+mytheme_bigheatmap_facetgrid <- theme_minimal() +
+  theme(
+    # Legend
+    legend.position = "bottom",
+    legend.text = element_text(size = 10),
+    legend.title = element_text(size = 12),
+    legend.key.width = unit(0.5, "cm"),
+    legend.spacing.x = unit(0.2, 'cm'),
+    
+    # Axis text and titles
+    axis.text.x = element_text(size = 8, angle = 90, hjust = 0.5, vjust = 0.5),
+    axis.text.y = element_text(size = 8),
+    axis.title.x = element_text(size = 12, vjust = -0.5),
+    axis.title.y = element_text(size = 12, vjust = 1.5),
+    
+    # Facet strip
+    strip.text = element_text(size = 11),
+    strip.background = element_blank(),
+    
+    # Panel spacing (between facets)
+    panel.spacing = unit(1, "lines"),
+    
+    # Plot margins (optional: tighter layout)
+    plot.margin = margin(5, 5, 5, 5)
+  )
 
 mytheme_nofacet <-   theme(legend.position = "bottom", 
                            axis.text.x = element_text(size = 12, angle = 45), 
@@ -44,14 +69,14 @@ mytheme_nofacet <-   theme(legend.position = "bottom",
                            legend.title = element_text(size = 14), 
                            axis.text.y = element_text(size = 12), 
                            axis.title = element_text(size =12), 
-                           legend.key.width = unit(0.5, "cm"),
-                           legend.spacing.x = unit(0.2, 'cm'))
+                           legend.key.width = unit(2.5, "cm"),
+                           legend.spacing.x = unit(0.3, 'cm'))
 
 mytheme_test_nofacet <- theme(
   legend.position = "bottom",
   legend.text = element_text(size = 12),
-  legend.title = element_text(size = 14),
-  legend.key.width = unit(0.5, "cm"),
+  legend.title = element_text(size = 12),
+  legend.key.width = unit(1.5, "cm"),
   legend.spacing.x = unit(0.2, 'cm'),
   
   axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
@@ -289,35 +314,14 @@ merged_data$read_name <- factor(merged_data$read_name, unique(merged_data$read_n
 all_assignment <- merged_data %>%
   group_by(assignment_level, read_name, file_name) %>%
   summarise(read_count = n(), .groups = "drop")  # Count number of reads per group# Sum read counts instead of recounting
-
 View(all_assignment)
-S_reads <- merged_data %>%
+
+S_reads <- all_assignment %>%
   filter(read_name %in% c("AF518190","KP875235"))
 
-S_reads %>% filter(read_count > 0) %>% 
-  ggplot(aes(assignment_level, fill =read_name)) + 
-  geom_bar(position = "dodge")+ 
-  theme_minimal() +
-  theme(legend.position = "bottom", 
-        legend.text = element_text(size = 6), 
-        legend.title = element_text(size = 8), 
-        legend.key.width = unit(0.5, "cm"),
-        legend.spacing.x = unit(0.2, 'cm'),
-        axis.text.x = element_text(size = 7, angle = 90))
-
-coi_reads <- merged_data %>%
+coi_reads <- all_assignment %>%
   filter(!read_name %in% c("AF518190","KP875235"))
 
-coi_reads %>% filter(read_count > 0 ) %>% 
-  ggplot(aes(read_name, fill = assignment_level)) + 
-  geom_bar(position = "dodge")+ 
-  theme_minimal() +
-  theme(legend.position = "bottom", 
-        legend.text = element_text(size = 6), 
-        legend.title = element_text(size = 8), 
-        legend.key.width = unit(0.5, "cm"),
-        legend.spacing.x = unit(0.2, 'cm'),
-        axis.text.x = element_text(size = 7, angle = 90))
 
 ### combined IODP + synthetic data version preliminary factoring #####
 merged_combo_data <- merged_combo_data %>% 
@@ -392,21 +396,20 @@ ggplot(aes(assignment_level, file_name, fill = read_count)) +
   scale_fill_viridis_c(option = "plasma", direction = -1)+ #more colourblind accessible
  # scale_fill_gradient(low = "purple", high = "yellow")+
   #scale_fill_gradient(low = "#440154", high = "#FDE725")+
-  facet_wrap(~read_name, scales = "free")+ 
-  theme_minimal() +
-  theme(legend.position = "bottom", 
-        legend.text = element_text(size = 6), 
-        legend.title = element_text(size = 8), 
-        legend.key.width = unit(0.5, "cm"),
-        legend.spacing.x = unit(0.2, 'cm'),
-        axis.text.x = element_text(size = 7, angle = 90, hjust = 1))+ 
+  #facet_wrap(~read_name, scales = "free")+ 
+  scale_x_discrete(expand = c(0, 0)) +  # remove x padding around tiles
+  facet_grid(~read_name, scales = "free", space = "free") + # enables varying widths
+  mytheme_bigheatmap_facetgrid+ 
   labs(
     x = "MALT Taxonomic Assignment", 
     y = "Damage and Fragment Input Run", 
-    title = "Harpagifer antarcticus - 18S vs. COI taxonomic assignment sytnthic datasets"
+    title = "Harpagifer antarcticus - 18S vs. COI taxonomic assignment sytnthic datasets",
+    fill = "Total count\nfragment assignment"
    # title = "Harpagifer antarcticus - 18S taxonomic assignment"
     #title = "Harpagifer antarcticus - COI taxonomic assignment"
-  )
+  ) 
+
+  ggsave("./HA_18SCOI_synthetic_fullheatmap.png", width = 12, height = 7, units = "in", dpi = 300)
 #filter data for paper to have ONLY instances were it showed up for all file_names (still faceted)
 # Filter to include only assignment levels present in all file_names per read_name
 filtered_ha_reads <- ha_reads %>%
@@ -430,47 +433,8 @@ filtered_ha_reads %>%
   labs(
     x = "MALT Taxonomic Assignment", 
     y = "Damage and Fragment Input Run", 
-    title = "Harpagifer antarcticus - 18S vs. COI taxonomic assignment synthetic data"
-  )
-
-########### testing different heatmap styles,including nested// combined graphs, not being used #####
-# # Subset data for each read_name
-
-library(ggnewscale)
-
-# Create a combined heatmap with nested color scales
-ggplot() +
-  # Plot for 18S
-  geom_tile(
-    data = ha_reads %>% filter(read_name == "18S - AF518190"),
-    aes(x = assignment_level, y = file_name, fill = read_count)
-  ) +
-  scale_fill_gradient(name = "18S Read Count", low = "purple", high = "yellow") +
-  
-  # Add a new scale for COI
-  new_scale_fill() +
-  
-  # Plot for COI
-  geom_tile(
-    data = ha_reads %>% filter(read_name == "COI - ON891147"),
-    aes(x = assignment_level, y = file_name, fill = read_count)
-  ) +
-  scale_fill_gradient(name = "COI Read Count", low = "skyblue", high = "red") +
-  
-  # Common theme and labels
-  theme_minimal() +
-  theme(
-    legend.position = "bottom",
-    legend.text = element_text(size = 6),
-    legend.title = element_text(size = 8),
-    legend.key.width = unit(0.5, "cm"),
-    legend.spacing.x = unit(0.2, 'cm'),
-    axis.text.x = element_text(size = 7, angle = 90)
-  ) +
-  labs(
-    x = "MALT Taxonomic Assignment",
-    y = "Damage and Fragment Input Run",
-    title = "Combined Heatmap: 18S and COI Taxonomic Assignments"
+    #title = "Harpagifer antarcticus - 18S vs. COI taxonomic assignment synthetic data",
+    fill = "Total count\nfragment assignment"
   )
 
 #################################### pygosclis antarcticus 18S v. COI ##################################
@@ -487,7 +451,7 @@ pa_reads %>%
   #filter(read_name == "COI - EU525471") %>% 
 ggplot(aes(assignment_level, file_name, fill = read_count)) + 
   geom_tile()+
-  scale_fill_gradient(low = "purple", high = "yellow")+
+  scale_fill_viridis_c(option = "plasma", direction = -1)+
   facet_wrap(~read_name, scales = "free")+ 
   theme_minimal() +
   theme(legend.position = "bottom", 
@@ -501,7 +465,8 @@ ggplot(aes(assignment_level, file_name, fill = read_count)) +
     y = "Damage and Fragment Input Run", 
     #title = "Pygoscelis antarcticus - 18S vs. COI taxonomic assignment"
     #title = "Pygoscelis antarcticus - 18S taxonomic assignment"
-    title = "Pygoscelis antarcticus- COI taxonomic assignment"
+    title = "Pygoscelis antarcticus- COI taxonomic assignment",
+    fill = "Total count\nfragment assignment"
   )
 
 ##### same filtered thing as nefore
@@ -526,48 +491,14 @@ filtered_pa_reads %>%
   mytheme_test +   labs(
     x = "MALT Taxonomic Assignment", 
     y = "Damage and Fragment Input Run", 
-    title = "Pygoscelis antarcticus - 18S vs. COI taxonomic assignment"
+    #title = "Pygoscelis antarcticus - 18S vs. COI taxonomic assignment",
+    fill = "Total count\nfragment assignment"
   )
 
     
 ############################################# testing species_only assignment across all runs#############
 
 library(reshape2)
-
-all_assignment %>%
-  filter(read_count > 0 ) %>% 
-ggplot(aes(x = assignment_level, y = read_count, fill = read_name)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  labs(title = "Stacked Bar Plot of Read Counts per Assignment level")
-
-
-ggplot(n10_assigment, aes(x = assignment_level, y = file_name, fill = read_count)) +
-  geom_tile() +
-  scale_fill_gradient(low = "purple", high = "blue") +
-  theme_minimal() +
-  theme(legend.position = "bottom", 
-        legend.text = element_text(size = 6), 
-        legend.title = element_text(size = 8), 
-        legend.key.width = unit(0.5, "cm"),
-        legend.spacing.x = unit(0.2, 'cm'),
-        axis.text.x = element_text(size = 7, angle = 90))+
-  labs(title = "Heatmap of Read Counts by Assignment level and File Name")
-
-ggplot(n10_assigment, aes(x = assignment_level, y = read_name, fill = read_count)) +
-  geom_tile() +
-  scale_fill_gradient(low = "pink", high = "blue") +
-  theme_minimal() +
-  theme_minimal() +
-  theme(legend.position = "bottom", 
-        legend.text = element_text(size = 6), 
-        legend.title = element_text(size = 8), 
-        legend.key.width = unit(0.5, "cm"),
-        legend.spacing.x = unit(0.2, 'cm'),
-        axis.text.x = element_text(size = 7, angle = 90))+
-  labs(title = "Heatmap of Read Counts Across Assignment levels")
-
 #################### look at species only assignments ############
 
 species_assigment <- merged_data %>% 
@@ -585,18 +516,6 @@ species_assigment <- merged_combo_data %>%
   mutate(read_count = n())
 View(species_assigment)
 
-
-ggplot(species_assigment, aes(x = assignment_level, y = file_name, fill = read_count)) +
-  geom_tile() +
-  scale_fill_gradient(low = "purple", high = "blue") +
-  theme_minimal() +
-  theme(legend.position = "bottom", 
-        legend.text = element_text(size = 6), 
-        legend.title = element_text(size = 8), 
-        legend.key.width = unit(0.5, "cm"),
-        legend.spacing.x = unit(0.2, 'cm'),
-        axis.text.x = element_text(size = 7, angle = 90))+
-  labs(title = "Heatmap of Read Counts by Assignment Taxa and Damage Treatment at Species Level")
 
 # Filter to just the observed data first (non-zero read_count)
 nonzero_species <- species_assigment %>%
@@ -625,7 +544,7 @@ filtered_species_reads <- species_assigment %>%
 # Plot
 filtered_species_reads %>%
            filter(read_count > 0, 
-                  !assignment_level %in% c("Harpagifer_bispinis", "Hesseltinella_vesiculosa", "Trematomus_loennbergii")) %>%
+                  !assignment_level %in% c("Harpagifer_bispinis", "Hesseltinella_vesiculosa", "Trematomus_loennbergii")) %>% #species with zero counts breaking the plot
   ggplot(aes(assignment_level, file_name, fill = read_count)) + 
   geom_tile(color = "white") +
   scale_fill_viridis_c(option = "plasma", direction = -1) +
@@ -657,19 +576,19 @@ ggplot(plot_data, aes(assignment_level, file_name, fill = read_count)) +
 
 ##################################################
 
-accession <- merged_data %>% 
-  filter(str_detect(assignment_level, "_")) %>%
-  filter(!assignment_level %in% c("cellular_organisms", "No_hits", "Not_assigned")) %>%
-  group_by(assignment_level, read_name, file_name) %>%
-  mutate(read_count = n())
-View(species_assigment)
-
-accession_combo <- merged_combo_data %>% 
-  filter(str_detect(assignment_level, "_")) %>%
-  filter(!assignment_level %in% c("cellular_organisms", "No_hits", "Not_assigned")) %>%
-  group_by(assignment_level, read_name, file_name) %>%
-  mutate(read_count = n())
-View(species_assigment)
+# accession <- merged_data %>% 
+#   filter(str_detect(assignment_level, "_")) %>%
+#   filter(!assignment_level %in% c("cellular_organisms", "No_hits", "Not_assigned")) %>%
+#   group_by(assignment_level, read_name, file_name) %>%
+#   mutate(read_count = n())
+# View(species_assigment)
+# 
+# accession_combo <- merged_combo_data %>% 
+#   filter(str_detect(assignment_level, "_")) %>%
+#   filter(!assignment_level %in% c("cellular_organisms", "No_hits", "Not_assigned")) %>%
+#   group_by(assignment_level, read_name, file_name) %>%
+#   mutate(read_count = n())
+# View(species_assigment)
 
 
 
@@ -740,7 +659,7 @@ all_assignment_combo_syn  <- all_assignment %>%
     TRUE ~ read_name # In case of any other values, retain them unchanged
   ))
 
-################## try to create normalized read counts? #####################
+################## try to create sensitivity (relative abundance - taxonomic assignment) read counts #####################
 #### for synthetic only visualization normalized read counts ###### 
 all_assignment_syn <- all_assignment_syn %>% 
   mutate(file_number = as.numeric(str_extract(file_name, "\\d+")))
@@ -754,9 +673,10 @@ ggplot(all_assignment_normal, aes(x = file_name, y = read_name, fill = nor_read_
   theme_minimal() +
   mytheme_test_nofacet +
   labs(
-    title = "Heatmap of Normalised Read Counts across Input Accessions",
-    x = "Input File",
-    y = "Read Name"
+   #title = "Heatmap of Normalised Read Counts across Input Accessions",
+    x = "Dataset",
+    y = "Input Species", 
+    fill = "Proportion fragments\nassigned correctly"
   )
 
 
