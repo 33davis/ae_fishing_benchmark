@@ -385,13 +385,15 @@ ggplot(aes(assignment_level, file_name, fill = read_count)) +
   labs(
     x = "MALT Taxonomic Assignment", 
     y = "Damage and Fragment Input Run", 
-    title = "Harpagifer antarcticus - 18S vs. COI taxonomic assignment sytnthic datasets",
+    #title = "Harpagifer antarcticus - 18S vs. COI taxonomic assignment sytnthic datasets", #title for synthetic_only data
+    title = "Harpagifer antarcticus - 18S vs. COI taxonomic assignment combined IODP + synthetic datasets", #title for merged_combo data
     fill = "Total count\nfragment assignment"
    # title = "Harpagifer antarcticus - 18S taxonomic assignment"
     #title = "Harpagifer antarcticus - COI taxonomic assignment"
   ) 
 
-  ggsave(filename = paste0(plots_dir, "HA_18SCOI_synthetic_fullheatmap.png"), width = 12, height = 7, units = "in", dpi = 300)
+  ggsave(filename = paste0(plots_dir, "HA_18SCOI_synthetic_fullheatmap.png"), width = 12, height = 7, units = "in", dpi = 300) #for synthetic plot
+  ggsave(filename = paste0(plots_dir, "HA_18SCOI_combinediodpsynthetic_fullheatmap.png"), width = 12, height = 7, units = "in", dpi = 300) #for combined plot
 #filter data for paper to have ONLY instances were it showed up for all file_names (still faceted)
 # Filter to include only assignment levels present in all file_names per read_name
 filtered_ha_reads <- ha_reads %>%
@@ -421,6 +423,7 @@ filtered_ha_reads %>%
     fill = "Total count\nfragment assignment"
   )
 ggsave( "HA_18SCOI_synthetic_filtered_heatmap.png", width = 5.5, height = 9, units = "in", dpi = 300)
+ggsave( "HA_18SCOI_combinedIODPsynthetic_filtered_heatmap.png", width = 5.5, height = 9, units = "in", dpi = 300)
 #################################### pygosclis antarcticus 18S v. COI ##################################
 pa_reads <- all_assignment %>%
   filter(read_name %in% c("KP875235", "EU525471")) %>%
@@ -442,13 +445,12 @@ ggplot(aes(assignment_level, file_name, fill = read_count)) +
   labs(
     x = "MALT Taxonomic Assignment", 
     y = "Damage and Fragment Input Run", 
-    #title = "Pygoscelis antarcticus - 18S vs. COI taxonomic assignment"
-    #title = "Pygoscelis antarcticus - 18S taxonomic assignment"
-    
-    #title = "Pygoscelis antarcticus- COI taxonomic assignment",
+    #title = "Harpagifer antarcticus - 18S vs. COI taxonomic assignment sytnthic datasets", #title for synthetic_only data
+    title = "Pygoscelis antarcticus - 18S vs. COI taxonomic assignment combined IODP + synthetic datasets", #title for merged_combo data
     fill = "Total count\nfragment assignment"
   )
 ggsave("PA_18SCOI_synthetic_fullheatmap.png", width = 12, height = 7, units = "in", dpi = 300)
+ggsave("PA_18SCOI_combinedIODPsynthetic_fullheatmap.png", width = 12, height = 7, units = "in", dpi = 300)
 ##### same filtered thing as nefore
 # Filter to include only assignment levels present in all file_names per read_name
 filtered_pa_reads <- pa_reads %>%
@@ -478,6 +480,7 @@ filtered_pa_reads %>%
     fill = "Total count\nfragment assignment"
   )
 ggsave( "PA_18SCOI_synthetic_filtered_heatmap.png", width = 5.5, height = 9, units = "in", dpi = 300)
+ggsave( "PA_18SCOI_combinedIODPsynthetic_filtered_heatmap.png", width = 5.5, height = 9, units = "in", dpi = 300)
     
 ############################################# testing species_only assignment across all runs#############
 
