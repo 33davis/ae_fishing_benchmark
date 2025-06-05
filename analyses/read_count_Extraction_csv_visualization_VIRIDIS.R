@@ -393,7 +393,7 @@ ggplot(aes(assignment_level, file_name, fill = read_count)) +
   ) 
 
   ggsave(filename = paste0(plots_dir, "HA_18SCOI_synthetic_fullheatmap.png"), width = 12, height = 7, units = "in", dpi = 300) #for synthetic plot
-  ggsave(filename = paste0(plots_dir, "HA_18SCOI_combinediodpsynthetic_fullheatmap.png"), width = 12, height = 7, units = "in", dpi = 300) #for combined plot
+  ggsave(filename = paste0(plots_dir, "HA_18SCOI_combinedIODPsynthetic_fullheatmap.png"), width = 12, height = 7, units = "in", dpi = 300) #for combined plot
 #filter data for paper to have ONLY instances were it showed up for all file_names (still faceted)
 # Filter to include only assignment levels present in all file_names per read_name
 filtered_ha_reads <- ha_reads %>%
