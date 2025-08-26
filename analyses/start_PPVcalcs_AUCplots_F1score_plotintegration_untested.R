@@ -19,11 +19,6 @@ library(metR)
 #excel sheet is sheet 2 of supplementary tables, but a copy within R project folder
 metrics_df <- read_xlsx("Precision_sensitivity_calculations.xlsx")
 
-metrics_long_test <- metrics_df %>%
-  pivot_longer(cols = c(precision, sensitivity), 
-               names_to = "metric", 
-               values_to = "value") %>%
-  mutate(metric = factor(metric, levels = c("precision", "sensitivity")))
 #mutate long first 
 metrics_long <- metrics_df %>% 
   pivot_longer(
