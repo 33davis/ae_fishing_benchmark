@@ -281,7 +281,7 @@ ggplot(ppv_df, aes(x = auc, y = precision, color = complexity, group = complexit
 # ------------------------------------------------
 # Example: relabel facets
 # Adjust this as needed for your dataset
-damage_labels <- c("no damage" = "0%", 
+damage_labels <- c("no_damage" = "0%", 
   "mudline_damage" = "3% (0 mbsf - 0 kya)", 
   "middle_damage" = "7% (14.55 mbsf - 14.5 kya)", 
   "bottom_damage" = "18% (61.5 mbsf - 214 kya)", 
