@@ -46,8 +46,8 @@ ppv_df$complexity <- factor(ppv_df$complexity,
                             levels = c(10, 25, 50, 100, 250, 500, 1000, 2500, 5000))
 # Convert damage to factor with ordered levels
 ppv_df$damage <- factor(ppv_df$damage,
-                        levels = c("no damage", "mudline_damage", "middle_damage", "bottom_damage", "all_damage",
-                                   "spiked_mudline_damage", "spiked_middle_damage", "spiked_bottom_damage"))
+                        levels = c("no damage", "mudline_damage","spiked_mudline_damage", "middle_damage", "spiked_middle_damage", "bottom_damage", "all_damage",
+                                  "spiked_bottom_damage"))
 # -------------------------------
 # 6. Calculate AUC for each combination
 # -------------------------------
