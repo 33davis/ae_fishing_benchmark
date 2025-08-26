@@ -7,7 +7,84 @@ library(tidyverse)
 library(readxl)
 library(viridis)
 library(metR)
+library(grid)
 
+################# publication themes for plots 
+mytheme <-   theme(legend.position = "bottom", 
+                   axis.text.x = element_text(size = 12, angle = 45), 
+                   legend.text = element_text(size = 12), 
+                   legend.title = element_text(size = 15), 
+                   axis.text.y = element_text(size = 12), 
+                   axis.title = element_text(size =12), 
+                   strip.text.x.top = element_text(size = 12), 
+                   legend.key.width = unit(0.5, "cm"),
+                   legend.spacing.x = unit(0.2, 'cm'))
+
+mytheme_test <- theme(
+  legend.position = "bottom",
+  legend.text = element_text(size = 10),
+  legend.title = element_text(size = 12),
+  legend.key.width = unit(0.7, "cm"),
+  legend.spacing.x = unit(0.2, 'cm'),
+  
+  axis.text.x = element_text(size = 10, angle = 45, hjust = 1),
+  axis.text.y = element_text(size = 10),
+  axis.title.x = element_text(size = 12, vjust = -0.5),
+  axis.title.y = element_text(size = 12, vjust = 1.5),
+  
+  strip.text = element_text(size = 11) #, face = "bold"),
+  # strip.background = element_rect(fill = "gray90", color = NA)
+)
+
+mytheme_bigheatmap_facetgrid <- theme_minimal() +
+  theme(
+    # Legend
+    legend.position = "bottom",
+    legend.text = element_text(size = 10),
+    legend.title = element_text(size = 12),
+    legend.key.width = unit(0.7, "cm"),
+    legend.spacing.x = unit(0.2, 'cm'),
+    
+    # Axis text and titles
+    axis.text.x = element_text(size = 7, angle = 90, hjust = 0.5, vjust = 0.5),
+    axis.text.y = element_text(size = 8),
+    axis.title.x = element_text(size = 12, vjust = -0.5),
+    axis.title.y = element_text(size = 12, vjust = 1.5),
+    
+    # Facet strip
+    strip.text = element_text(size = 10),
+    strip.background = element_blank(),
+    
+    # Panel spacing (between facets)
+    panel.spacing = unit(1, "lines"),
+    # 
+    # # Plot margins (optional: tighter layout)
+    # plot.margin = margin(5, 5, 5, 5), 
+    # add a background so it isn't transparent
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background = element_rect(fill = "white", color = NA)
+  )
+
+mytheme_nofacet <-   theme(legend.position = "bottom", 
+                           axis.text.x = element_text(size = 12, angle = 45), 
+                           legend.text = element_text(size = 12), 
+                           legend.title = element_text(size = 14), 
+                           axis.text.y = element_text(size = 12), 
+                           axis.title = element_text(size =12), 
+                           legend.key.width = unit(2.5, "cm"),
+                           legend.spacing.x = unit(0.3, 'cm'))
+
+mytheme_test_nofacet <- theme(
+  legend.position = "bottom",
+  legend.text = element_text(size = 12),
+  legend.title = element_text(size = 12),
+  legend.key.width = unit(1.5, "cm"),
+  legend.spacing.x = unit(0.2, 'cm'),
+  
+  axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
+  axis.text.y = element_text(size = 12),
+  axis.title.x = element_text(size = 12, vjust = -0.5),
+  axis.title.y = element_text(size = 12, vjust = 1.5))
 #goal make versions of plots that mimic the ones in manuscript
 #comparing all synthetic data
 #comparing all spiked data
