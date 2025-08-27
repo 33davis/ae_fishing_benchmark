@@ -8,6 +8,8 @@ library(readxl)
 library(viridis)
 library(metR)
 library(grid)
+library(patchwork)
+library(ggrepel)
 
 ################# publication themes for plots 
 mytheme <-   theme(legend.position = "bottom", 
@@ -123,8 +125,8 @@ ppv_df$complexity <- factor(ppv_df$complexity,
                             levels = c(10, 25, 50, 100, 250, 500, 1000, 2500, 5000))
 # Convert damage to factor with ordered levels
 ppv_df$damage <- factor(ppv_df$damage,
-                        levels = c("no_damage", "mudline_damage","spiked_mudline_damage", "middle_damage", "spiked_middle_damage", "bottom_damage", "all_damage",
-                                  "spiked_bottom_damage"))
+                        levels = c("no_damage", "mudline_damage","spiked_mudline_damage", "middle_damage", "spiked_middle_damage", "bottom_damage",
+                                  "spiked_bottom_damage", "all_damage"))
 # -------------------------------
 # 6. Calculate AUC for each combination
 # -------------------------------
@@ -295,11 +297,11 @@ ggplot() +
 p1 <- ggplot(ppv_df, aes(x = sensitivity, y = precision, 
                          color = complexity, group = complexity)) +
   geom_line(size = 1) +
-  facet_wrap(~ damage) +
+  facet_wrap(~ damage, labeller = labeller(damage = damage_labels)) +
   geom_contour(aes(z = F1), color = "grey50", bins = 5, alpha = 0.5) +
   scale_y_continuous(limits = c(0,1)) +
   scale_x_continuous(limits = c(0,1)) +
-  theme_bw() +
+  mytheme_bigheatmap_facetgrid +
   labs(
     title = "Precision vs Sensitivity (ROC-style)",
     x = "Sensitivity (Recall)",
@@ -307,13 +309,13 @@ p1 <- ggplot(ppv_df, aes(x = sensitivity, y = precision,
   )
 p1
 
-# AUC summary plot
+# AUC summary plot ### fix naming of x axis 
 p2 <- ggplot(ppv_df, aes(x = damage, y = auc, 
                          color = complexity, group = complexity)) +
   geom_line(size = 1) +
   geom_point(size = 2) +
-  facet_wrap(~ rank) +
-  theme_bw() +
+  facet_wrap(~ rank, labeller = labeller(damage = damage_labels)) +
+  mytheme_bigheatmap_facetgrid +
   labs(
     title = "AUC by Damage level and Complexity",
     x = "Damamge level",
@@ -367,14 +369,6 @@ damage_labels <- c("no_damage" = "0%",
   "spiked_middle_damage" = "combined 7% (14.55 mbsf - 14.5 kya)",
   "spiked_bottom_damage" = "combined 18% (61.5 mbsf - 214 kya)")
 
-# ------------------------------------------------
-# Example: preferred colour mapping
-# Replace with your desired categories
-preferred_colors <- c(
-  "shark"   = "darkgreen",
-  "lobster" = "blue"
-)
-
 # ================================================================
 # 1. Precision-Recall with F1 contours
 # ------------------------------------------------
@@ -393,7 +387,7 @@ f1_contours <- expand.grid(
   mutate(precision = (F1 * sensitivity) / (2 * sensitivity - F1)) %>%
   filter(precision >= 0 & precision <= 1)
 
-p1 <- ggplot() +
+p3 <- ggplot() +
   geom_line(data = f1_contours,
             aes(x = sensitivity, y = precision, group = F1),
             linetype = "dashed", color = "grey50") +
@@ -402,13 +396,13 @@ p1 <- ggplot() +
             hjust = -0.1, vjust = 0.5, size = 3, color = "grey40") +
   geom_line(data = ppv_df,
             aes(x = sensitivity, y = precision, color = complexity,
-                group = interaction(complexity, rank)),
+                group = interaction(rank)),
             size = 1) +
   geom_point(data = ppv_df,
              aes(x = sensitivity, y = precision, color = complexity, shape = rank),
              size = 2) +
   facet_grid(damage ~ rank, labeller = labeller(damage = damage_labels)) +
-  scale_color_manual(values = preferred_colors) +
+  scale_color_viridis_d(option = "C") +
   labs(
     title = "Precision-Recall with F1 Score Contours",
     x = "Sensitivity (Recall)",
@@ -419,7 +413,7 @@ p1 <- ggplot() +
   theme_bw() +
   theme(panel.grid = element_blank(),
         legend.position = "bottom")
-
+p3
 # ================================================================
 # 2. Simple Precision-Recall curves
 # ------------------------------------------------
@@ -428,13 +422,13 @@ p1 <- ggplot() +
 # - Curves closer to the top-right indicate better trade-offs.
 # ================================================================
 
-p2 <- ggplot(ppv_df, aes(x = sensitivity, y = precision,
+p4 <- ggplot(ppv_df, aes(x = sensitivity, y = precision,
                          color = complexity,
                          group = interaction(complexity, rank))) +
   geom_line(size = 1) +
   geom_point(aes(shape = rank), size = 2) +
   facet_grid(damage ~ rank, labeller = labeller(damage = damage_labels)) +
-  scale_color_manual(values = preferred_colors) +
+  scale_color_viridis_d(option = "C") +
   labs(
     title = "Precision-Recall Curves by Rank and Damage",
     x = "Sensitivity (Recall)",
@@ -445,7 +439,7 @@ p2 <- ggplot(ppv_df, aes(x = sensitivity, y = precision,
   theme_bw() +
   theme(panel.grid = element_blank(),
         legend.position = "bottom")
-
+p4
 # ================================================================
 # 3. Aggregate comparison plot (by complexity)
 # ------------------------------------------------
@@ -454,7 +448,7 @@ p2 <- ggplot(ppv_df, aes(x = sensitivity, y = precision,
 # - Useful when rank is secondary to complexity comparison.
 # ================================================================
 
-p3 <- ggplot(ppv_df, aes(x = sensitivity, y = precision,
+p5 <- ggplot(ppv_df, aes(x = sensitivity, y = precision,
                          color = complexity)) +
   geom_line(size = 1, alpha = 0.8) +
   geom_point(size = 2, alpha = 0.8) +
@@ -469,6 +463,7 @@ p3 <- ggplot(ppv_df, aes(x = sensitivity, y = precision,
   theme(panel.grid = element_blank(),
         legend.position = "bottom")
 
+p5
 # ================================================================
 # Output: arrange plots or save individually
 # ================================================================
@@ -476,3 +471,103 @@ p3 <- ggplot(ppv_df, aes(x = sensitivity, y = precision,
 # Example to display them together if you have patchwork:
 # library(patchwork)
 # p1 / p2 / p3
+
+# ============================================================
+# PPV / AUC Plotting Script with F1 Contours
+# ============================================================
+# Input: ppv_df (columns: rank, complexity, damage, PPV, AUC, F1)
+# Output: Suite of plots grouped by synthetic, spiked, and paired
+# ============================================================
+
+library(dplyr)
+library(ggplot2)
+library(viridis)
+library(ggrepel)
+
+# -------------------------
+# Subset Data
+# -------------------------
+
+# 1. Synthetic-only damage types
+synthetic_df <- ppv_df %>%
+  filter(damage %in% c("no_damage", "all_damage", 
+                       "mudline_damage", "middle_damage", "bottom_damage"))
+
+# 2. Spiked-only damage types
+spiked_df <- ppv_df %>%
+  filter(damage %in% c("spiked_mudline_damage", 
+                       "spiked_middle_damage", "spiked_bottom_damage"))
+
+# 3. Paired synthetic vs spiked damage
+paired_df <- ppv_df %>%
+  filter(damage %in% c("mudline_damage", "spiked_mudline_damage",
+                       "middle_damage", "spiked_middle_damage",
+                       "bottom_damage", "spiked_bottom_damage")) %>%
+  mutate(pair = case_when(
+    damage %in% c("mudline_damage", "spiked_mudline_damage") ~ "mudline",
+    damage %in% c("middle_damage", "spiked_middle_damage") ~ "middle",
+    damage %in% c("bottom_damage", "spiked_bottom_damage") ~ "bottom"
+  ))
+
+# -------------------------
+# Helper: PPV vs AUC with F1 Contours
+# -------------------------
+plot_ppv_auc <- function(df, facet_var = "damage", title = "PPV vs AUC") {
+  ggplot(df, aes(x = AUC, y = PPV, color = complexity)) +
+    geom_point(alpha = 0.6) +
+    geom_line(aes(group = interaction(complexity, damage)), linewidth = 1) +
+    # F1 contours
+    geom_contour(
+      aes(z = F1), 
+      bins = 6, color = "grey50", alpha = 0.6
+    ) +
+    geom_text_contour(
+      aes(z = F1),
+      bins = 6, stroke = 0.2, size = 3
+    ) +
+    facet_wrap(as.formula(paste("~", facet_var))) +
+    scale_color_viridis_d(option = "C") + # viridis plasma "C"
+    theme_minimal(base_size = 14) +
+    labs(
+      title = title,
+      x = "AUC",
+      y = "PPV",
+      color = "Complexity"
+    )
+}
+
+# ============================================================
+# PLOTS
+# ============================================================
+
+# 1. Synthetic-only
+p_synthetic <- plot_ppv_auc(synthetic_df, facet_var = "damage",
+                            title = "Synthetic Damage Types")
+
+# 2. Spiked-only
+p_spiked <- plot_ppv_auc(spiked_df, facet_var = "damage",
+                         title = "Spiked Damage Types")
+
+# 3. Paired comparisons
+p_paired <- plot_ppv_auc(paired_df, facet_var = "pair",
+                         title = "Synthetic vs Spiked Paired Comparisons")
+
+# ============================================================
+# INTERPRETATION NOTES (COMMENTED)
+# ============================================================
+# - Synthetic plots: compare performance of classifiers under different 
+#   artificial ("clean") damage scenarios. Helps establish baseline.
+# - Spiked plots: show effect of additional spiked complexity.
+# - Paired plots: directly contrast synthetic vs spiked for mudline, middle, 
+#   and bottom. Useful for identifying performance degradation or improvement.
+# - F1 contours: lines of equal balance between PPV and recall (via F1).
+#   Higher F1 contour levels indicate better overall performance.
+# - Color (complexity): complexity level of analysis (e.g., species/genus/family).
+#   Comparing colors within a facet shows how complexity influences outcomes.
+
+# ============================================================
+# Example: Print plots
+# ============================================================
+print(p_synthetic)
+print(p_spiked)
+print(p_paired)
