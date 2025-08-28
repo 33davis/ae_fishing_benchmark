@@ -452,7 +452,7 @@ p5 <- ggplot(ppv_df, aes(x = sensitivity, y = precision,
                          color = complexity)) +
   geom_line(size = 1, alpha = 0.8) +
   geom_point(size = 2, alpha = 0.8) +
-  scale_color_manual(values = preferred_colors) +
+  scale_color_viridis_d(option = "C") +
   labs(
     title = "Aggregate Precision-Recall by Complexity",
     x = "Sensitivity (Recall)",
@@ -513,7 +513,7 @@ paired_df <- ppv_df %>%
 # Helper: PPV vs AUC with F1 Contours
 # -------------------------
 plot_ppv_auc <- function(df, facet_var = "damage", title = "PPV vs AUC") {
-  ggplot(df, aes(x = AUC, y = PPV, color = complexity)) +
+  ggplot(df, aes(x = auc, y = PPV, color = complexity)) +
     geom_point(alpha = 0.6) +
     geom_line(aes(group = interaction(complexity, damage)), linewidth = 1) +
     # F1 contours
@@ -537,7 +537,7 @@ plot_ppv_auc <- function(df, facet_var = "damage", title = "PPV vs AUC") {
 }
 
 # ============================================================
-# PLOTS
+# PLOTS ;)
 # ============================================================
 
 # 1. Synthetic-only
