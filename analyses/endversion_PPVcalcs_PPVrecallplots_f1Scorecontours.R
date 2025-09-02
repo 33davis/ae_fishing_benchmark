@@ -875,7 +875,7 @@ p_spiked <-
     panel.grid = element_blank(),
     legend.position = "bottom", 
     strip.text = element_text(size = 12))
-
+print(p_spiked)
 ################## 3. Paired comparisons #####################
 
 p_paired <-
@@ -915,7 +915,8 @@ p_paired <-
   theme(
     panel.grid = element_blank(),
     legend.position = "bottom", 
-    strip.text = element_text(size = 12))
+    strip.text = element_text(size = 9))
+print(p_paired)
 # ============================================================
 # INTERPRETATION NOTES (COMMENTED)
 # ============================================================
