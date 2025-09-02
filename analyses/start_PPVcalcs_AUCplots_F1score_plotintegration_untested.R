@@ -1,4 +1,4 @@
-#this is a draft script for Precision - Recall 
+#this is a draft script for PPV plotting and visualization
 
 # Load required libraries
 library(ggplot2)
@@ -365,9 +365,9 @@ damage_labels <- c("no_damage" = "0%",
   "middle_damage" = "7% (14.55 mbsf - 14.5 kya)", 
   "bottom_damage" = "18% (61.5 mbsf - 214 kya)", 
   "all_damage" = "100%",
-  "spiked_mudline_damage" = "combined 3% (0 mbsf - 0 kya)",
-  "spiked_middle_damage" = "combined 7% (14.55 mbsf - 14.5 kya)",
-  "spiked_bottom_damage" = "combined 18% (61.5 mbsf - 214 kya)")
+  "spiked_mudline_damage" = "combined 3%",
+  "spiked_middle_damage" = "combined 7% ",
+  "spiked_bottom_damage" = "combined 18%")
 
 # ================================================================
 # 1. Precision-Recall with F1 contours
@@ -394,14 +394,14 @@ p3 <- ggplot() +
   geom_text(data = f1_contours %>% group_by(F1) %>% slice_tail(n = 1),
             aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
             hjust = -0.1, vjust = 0.5, size = 3, color = "grey40") +
-  geom_line(data = ppv_df,
-            aes(x = sensitivity, y = precision, color = complexity,
-                group = interaction(rank)),
-            size = 1) +
+  # geom_line(data = ppv_df,
+  #           aes(x = sensitivity, y = precision, color = complexity,
+  #               group = interaction(rank)),
+  #           size = 1) +
   geom_point(data = ppv_df,
              aes(x = sensitivity, y = precision, color = complexity, shape = rank),
              size = 2) +
-  facet_grid(damage ~ rank, labeller = labeller(damage = damage_labels)) +
+  facet_grid(rank ~ damage, labeller = labeller(damage = damage_labels)) +
   scale_color_viridis_d(option = "C") +
   labs(
     title = "Precision-Recall with F1 Score Contours",
@@ -412,7 +412,8 @@ p3 <- ggplot() +
   ) +
   theme_bw() +
   theme(panel.grid = element_blank(),
-        legend.position = "bottom")
+        legend.position = "bottom", 
+        strip.text = element_text(size = 6))
 p3
 # ================================================================
 # 2. Simple Precision-Recall curves
@@ -512,8 +513,8 @@ paired_df <- ppv_df %>%
 # -------------------------
 # Helper: PPV vs AUC with F1 Contours
 # -------------------------
-plot_ppv_auc <- function(df, facet_var = "damage", title = "PPV vs AUC") {
-  ggplot(df, aes(x = auc, y = PPV, color = complexity)) +
+plot_ppv_auc <- function(df, facet_var = "damage", title = "PPV vs Reca") {
+  ggplot(df, aes(x = sensitivity, y = precision, color = complexity)) +
     geom_point(alpha = 0.6) +
     geom_line(aes(group = interaction(complexity, damage)), linewidth = 1) +
     # F1 contours
