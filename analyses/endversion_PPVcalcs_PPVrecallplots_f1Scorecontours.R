@@ -163,16 +163,16 @@ ppv_df$complexity <- factor(ppv_df$complexity,
 ppv_df$damage <- factor(ppv_df$damage,
                         levels = c("no_damage", "mudline_damage","spiked_mudline_damage", "middle_damage", "spiked_middle_damage", "bottom_damage",
                                    "spiked_bottom_damage", "all_damage"))
-# -------------------------------
-# 6. Calculate AUC for each combination (this isn't actually helpful at all, because there is not PR curve to get the area under, just summarised values)
-# -------------------------------
-ppv_df <- ppv_df %>%
-  arrange(complexity, damage, sensitivity) %>%
-  group_by(complexity, damage) %>%
-  mutate(
-    auc = sum(diff(sensitivity) * head(precision, -1), na.rm = TRUE))%>%
-  ungroup()
-
+# # -------------------------------
+# # 6. Calculate AUC for each combination (this isn't actually helpful at all, because there is not PR curve to get the area under, just summarised values)
+# # -------------------------------
+# ppv_df <- ppv_df %>%
+#   arrange(complexity, damage, sensitivity) %>%
+#   group_by(complexity, damage) %>%
+#   mutate(
+#     auc = sum(diff(sensitivity) * head(precision, -1), na.rm = TRUE))%>%
+#   ungroup()
+# 
 
 # Function to generate F1 contour data
 make_f1_contours <- function(n_points = 200, f1_values = c(0.2, 0.4, 0.6, 0.8)) {
@@ -255,18 +255,18 @@ ggplot() +
     strip.text = element_text(size = 9))
 
 
-# AUC summary plot ### fix naming of x axis 
-ggplot(ppv_df, aes(x = damage, y = auc, 
-                   color = complexity, group = complexity)) +
-  geom_line(size = 1) +
-  geom_point(size = 2) +
-  facet_wrap(~ rank, labeller = labeller(damage = damage_labels)) +
-  mytheme_bigheatmap_facetgrid +
-  labs(
-    title = "AUC by Damage level and Complexity",
-    x = "Damamge level",
-    y = "AUC"
-  )
+# # AUC summary plot ### fix naming of x axis 
+# ggplot(ppv_df, aes(x = damage, y = auc, 
+#                    color = complexity, group = complexity)) +
+#   geom_line(size = 1) +
+#   geom_point(size = 2) +
+#   facet_wrap(~ rank, labeller = labeller(damage = damage_labels)) +
+#   mytheme_bigheatmap_facetgrid +
+#   labs(
+#     title = "AUC by Damage level and Complexity",
+#     x = "Damamge level",
+#     y = "AUC"
+#   )
 
 
 
@@ -309,11 +309,11 @@ synthetic_df <- ppv_df %>%
   filter(damage %in% c("no_damage", "all_damage", 
                        "mudline_damage", "middle_damage", "bottom_damage"))
 # Labels for synthetic plot
-synthetic_damage_labels <- c("no_damage" = "Synthetic 0%", 
-                             "mudline_damage" = "Synthetic 3% (0 mbsf - 0 kya)", 
-                             "middle_damage" = "Synthetic 7% (14.55 mbsf - 14.5 kya)", 
-                             "bottom_damage" = "Synthetic 18% (61.5 mbsf - 214 kya)", 
-                             "all_damage" = "Synthetic 100%")
+synthetic_damage_labels <- c("no_damage" = "0%", 
+                             "mudline_damage" = "3% (0 mbsf - 0 kya)", 
+                             "middle_damage" = "7% (14.55 mbsf - 14.5 kya)", 
+                             "bottom_damage" = "18% (61.5 mbsf - 214 kya)", 
+                             "all_damage" = "100%")
 
 # 2. Spiked-only damage types
 spiked_df <- ppv_df %>%
@@ -337,12 +337,12 @@ paired_df <- ppv_df %>%
 
 # Labels for paired plot
 paired_damage_labels <- c(
-  "mudline_damage"        = "Synthetic 3% (0 mbsf – 0 kya)",
-  "spiked_mudline_damage" = "Combined 3% (0 mbsf – 0 kya)",
-  "middle_damage"         = "Synthetic 7% (14.55 mbsf – 14.5 kya)",
-  "spiked_middle_damage"  = "Combined 7% (14.55 mbsf – 14.5 kya)",
-  "bottom_damage"         = "Synthetic 18% (61.5 mbsf – 214 kya)",
-  "spiked_bottom_damage"  = "Combined 18% (61.5 mbsf – 214 kya)")
+  "mudline_damage"        = "3% (0 mbsf – 0 kya)",
+  "spiked_mudline_damage" = "Combined 3%",
+  "middle_damage"         = "7% (14.55 mbsf – 14.5 kya)",
+  "spiked_middle_damage"  = "Combined 7%",
+  "bottom_damage"         = "18% (61.5 mbsf – 214 kya)",
+  "spiked_bottom_damage"  = "Combined 18%")
 # ============================================================
 # PLOTS ;)
 # ============================================================
@@ -686,7 +686,7 @@ ggplot() +
   # Points at observed values
   geom_point(data = ppv_df,
              aes(x = sensitivity, y = precision, color = complexity),
-             size = 4) +
+             size = 3) +
   
   # Facet by rank and damage
   facet_grid(rank ~ damage, labeller = labeller(damage = damage_labels)) +
@@ -758,11 +758,11 @@ synthetic_df <- ppv_df %>%
   filter(damage %in% c("no_damage", "all_damage", 
                        "mudline_damage", "middle_damage", "bottom_damage"))
 # Labels for synthetic plot
-synthetic_damage_labels <- c("no_damage" = "Synthetic 0%", 
-                             "mudline_damage" = "Synthetic 3% (0 mbsf - 0 kya)", 
-                             "middle_damage" = "Synthetic 7% (14.55 mbsf - 14.5 kya)", 
-                             "bottom_damage" = "Synthetic 18% (61.5 mbsf - 214 kya)", 
-                             "all_damage" = "Synthetic 100%")
+synthetic_damage_labels <- c("no_damage" = "0%", 
+                             "mudline_damage" = "3% (0 mbsf - 0 kya)", 
+                             "middle_damage" = "7% (14.55 mbsf - 14.5 kya)", 
+                             "bottom_damage" = "18% (61.5 mbsf - 214 kya)", 
+                             "all_damage" = "100%")
 
 # 2. Spiked-only damage types
 spiked_df <- ppv_df %>%
@@ -787,11 +787,11 @@ paired_df <- ppv_df %>%
 # Labels for paired plot
 paired_damage_labels <- c(
   "mudline_damage"        = "Synthetic 3% (0 mbsf – 0 kya)",
-  "spiked_mudline_damage" = "Combined 3% (0 mbsf – 0 kya)",
+  "spiked_mudline_damage" = "Combined 3%",
   "middle_damage"         = "Synthetic 7% (14.55 mbsf – 14.5 kya)",
-  "spiked_middle_damage"  = "Combined 7% (14.55 mbsf – 14.5 kya)",
+  "spiked_middle_damage"  = "Combined 7% ",
   "bottom_damage"         = "Synthetic 18% (61.5 mbsf – 214 kya)",
-  "spiked_bottom_damage"  = "Combined 18% (61.5 mbsf – 214 kya)")
+  "spiked_bottom_damage"  = "Combined 18%")
 # ============================================================
 # PLOTS ;)
 # ============================================================
@@ -899,7 +899,7 @@ p_paired <-
   # Points at observed values
   geom_point(data = paired_df,
              aes(x = sensitivity, y = precision, color = complexity),
-             size = 4) +
+             size = 3) +
   
   # Facet by rank and damage
   facet_grid(rank ~ damage, labeller = labeller(damage = paired_damage_labels)) +
