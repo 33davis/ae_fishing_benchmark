@@ -84,6 +84,36 @@ run_dunn_per_rank <- function(df, metric_name) {
 dunn_results <- map_dfr(metrics, ~run_dunn_per_rank(ppv_df, .x))
 write_csv(dunn_results, "Dunn_results_by_complexity.csv")
 
+# ========================================
+# Custom theme for plots
+# ========================================
+mytheme_bigheatmap_facetgrid_light <- theme_minimal() +
+  theme(
+    # Legend
+    legend.position = "bottom",
+    legend.text = element_text(size = 10),
+    legend.title = element_text(size = 12),
+    legend.key.width = unit(0.7, "cm"),
+    legend.spacing.x = unit(0.2, 'cm'),
+    
+    # Axis text and titles
+    axis.text.x = element_text(size = 12, angle = 90, hjust = 0.5, vjust = 0.5),
+    axis.text.y = element_text(size = 12),
+    axis.title.x = element_text(size = 12, vjust = -0.5),
+    axis.title.y = element_text(size = 12, vjust = 1.5),
+    
+    # Facet strip
+    strip.text = element_text(size = 10),
+    strip.background = element_blank(),
+    
+    # Panel spacing (between facets)
+    panel.spacing = unit(1, "lines"),
+    # Background with light grid
+    panel.background = element_rect(fill = "white", color = NA),
+    plot.background  = element_rect(fill = "white", color = NA),
+    panel.grid.major = element_line(color = "grey90", size = 0.3),
+    panel.grid.minor = element_line(color = "grey95", size = 0.2)
+  )
 # ==========================================================
 # Plot Precision
 # ==========================================================
@@ -95,16 +125,19 @@ plot_precision <- ggplot(ppv_df, aes(x = complexity, y = precision,
   stat_summary(fun = median, geom = "line", linewidth = 1) +
   stat_summary(fun.data = median_hilow, geom = "errorbar", width = 0.2) +
   facet_wrap(~rank, scales = "free_y") +
-  theme_bw() +
   scale_colour_viridis_d(option = "C") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "bottom") +
   labs(y = "Precision (PPV)", x = "Input Fragment Amount") +
   stat_pvalue_manual(
     dunn_sig_precision,
     label = "p.adj.signif",
     hide.ns = TRUE
-  )
+  )+ 
+  mytheme_bigheatmap_facetgrid_light +
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom", 
+    strip.text = element_text(size = 9)) 
+plot_precision # review plot before saving
 
 ggsave("Precision_by_complexity.png", plot_precision, width = 10, height = 6, dpi = 300)
 
@@ -119,16 +152,19 @@ plot_sensitivity <- ggplot(ppv_df, aes(x = complexity, y = sensitivity,
   stat_summary(fun = median, geom = "line", size = 1) +
   stat_summary(fun.data = median_hilow, geom = "errorbar", width = 0.2) +
   facet_wrap(~rank, scales = "free_y") +
-  theme_bw()+
   scale_color_viridis_d(option = "C") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "bottom") +
   labs(y = "Sensitivity (Recall)", x = "Input Fragment Amount") +
   stat_pvalue_manual(
     dunn_sig_sensitivity,
     label = "p.adj.signif",
     hide.ns = TRUE
-  )
+  )+  
+  mytheme_bigheatmap_facetgrid_light +
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom", 
+    strip.text = element_text(size = 9))
+plot_sensitivity # review plot before saving
 
 ggsave("Sensitivity_by_complexity.png", plot_sensitivity, width = 10, height = 6, dpi = 300)
 
@@ -143,16 +179,18 @@ plot_f1 <- ggplot(ppv_df, aes(x = complexity, y = F1,
   stat_summary(fun = median, geom = "line", size = 1) +
   stat_summary(fun.data = median_hilow, geom = "errorbar", width = 0.2) +
   facet_wrap(~rank, scales = "free_y") +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        legend.position = "bottom") +
+  mytheme_bigheatmap_facetgrid_light +
+  theme(
+    panel.grid = element_blank(),
+    legend.position = "bottom", 
+    strip.text = element_text(size = 9)) +
   labs(y = "F1 Score", x = "Input Fragment Amount") +
   stat_pvalue_manual(
     dunn_sig_f1,
     label = "p.adj.signif",
     hide.ns = TRUE
   )
-
+plot_f1 # review plot before saving
 ggsave("F1_by_complexity.png", plot_f1, width = 10, height = 6, dpi = 300)
 
 
