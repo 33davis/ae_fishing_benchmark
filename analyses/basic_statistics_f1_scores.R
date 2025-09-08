@@ -91,8 +91,8 @@ mytheme_bigheatmap_facetgrid_light <- theme_minimal() +
   theme(
     # Legend
     legend.position = "bottom",
-    legend.text = element_text(size = 8),
-    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 10),
+    legend.title = element_text(size = 12),
     legend.key.width = unit(0.6, "cm"),
     legend.spacing.x = unit(0.1, 'cm'),
     
@@ -147,7 +147,7 @@ plot_precision <- ggplot(ppv_df, aes(x = complexity, y = precision,
     strip.text = element_text(size = 12))
 plot_precision # review plot before saving
 
-ggsave("Precision_by_complexity.png", plot_precision, width = 11, height = 6, dpi = 300)
+ggsave("Precision_by_complexity.png", plot_precision, width = 13, height = 6, dpi = 300)
 
 # ==========================================================
 # Plot Sensitivity
@@ -183,7 +183,7 @@ plot_sensitivity <- ggplot(ppv_df, aes(x = complexity, y = sensitivity,
 
 plot_sensitivity # review plot before saving
 
-ggsave("Sensitivity_by_complexity.png", plot_sensitivity, width = 11, height = 6, dpi = 300)
+ggsave("Sensitivity_by_complexity.png", plot_sensitivity, width = 13, height = 6, dpi = 300)
 
 # ==========================================================
 # Plot F1
@@ -218,7 +218,7 @@ plot_f1 <- ggplot(ppv_df, aes(x = complexity, y = F1,
   )
 
 plot_f1 # review plot before saving
-ggsave("F1_by_complexity.png", plot_f1, width = 11, height = 6, dpi = 300)
+ggsave("F1_by_complexity.png", plot_f1, width = 13, height = 6, dpi = 300)
 
 
 # ========================================
