@@ -91,10 +91,10 @@ mytheme_bigheatmap_facetgrid_light <- theme_minimal() +
   theme(
     # Legend
     legend.position = "bottom",
-    legend.text = element_text(size = 10),
-    legend.title = element_text(size = 12),
-    legend.key.width = unit(0.7, "cm"),
-    legend.spacing.x = unit(0.2, 'cm'),
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10),
+    legend.key.width = unit(0.6, "cm"),
+    legend.spacing.x = unit(0.1, 'cm'),
     
     # Axis text and titles
     axis.text.x = element_text(size = 12, angle = 90, hjust = 0.5, vjust = 0.5),
@@ -125,7 +125,15 @@ plot_precision <- ggplot(ppv_df, aes(x = complexity, y = precision,
   stat_summary(fun = median, geom = "line", linewidth = 1) +
   stat_summary(fun.data = median_hilow, geom = "errorbar", width = 0.2) +
   facet_wrap(~rank, scales = "free_y") +
-  scale_colour_viridis_d(option = "C") +
+  scale_colour_viridis_d(option = "C", name = "Damage Level Treatment",
+                         labels = c("Synthetic 0%", 
+                                    "Synthetic 3% (0 mbsf - 0 kya)",
+                                    "Combined 3% (0 mbsf - 0 kya)", 
+                                    "Synthetic 7% (14.55 mbsf - 14.5 kya)", 
+                                    "Combined 7% (14.55 mbsf - 14.5 kya)", 
+                                    "Synthetic 18% (61.5 mbsf - 214 kya)", 
+                                    "Combined 18% (61.5 mbsf - 214 kya)", 
+                                    "Synthetic 100%" )) +
   labs(y = "Precision (PPV)", x = "Input Fragment Amount") +
   stat_pvalue_manual(
     dunn_sig_precision,
@@ -136,10 +144,10 @@ plot_precision <- ggplot(ppv_df, aes(x = complexity, y = precision,
   theme(
     panel.grid = element_blank(),
     legend.position = "bottom", 
-    strip.text = element_text(size = 9)) 
+    strip.text = element_text(size = 12))
 plot_precision # review plot before saving
 
-ggsave("Precision_by_complexity.png", plot_precision, width = 10, height = 6, dpi = 300)
+ggsave("Precision_by_complexity.png", plot_precision, width = 11, height = 6, dpi = 300)
 
 # ==========================================================
 # Plot Sensitivity
@@ -152,7 +160,15 @@ plot_sensitivity <- ggplot(ppv_df, aes(x = complexity, y = sensitivity,
   stat_summary(fun = median, geom = "line", size = 1) +
   stat_summary(fun.data = median_hilow, geom = "errorbar", width = 0.2) +
   facet_wrap(~rank, scales = "free_y") +
-  scale_color_viridis_d(option = "C") +
+  scale_colour_viridis_d(option = "C", name = "Damage Level Treatment",
+                         labels = c("Synthetic 0%", 
+                                    "Synthetic 3% (0 mbsf - 0 kya)",
+                                    "Combined 3% (0 mbsf - 0 kya)", 
+                                    "Synthetic 7% (14.55 mbsf - 14.5 kya)", 
+                                    "Combined 7% (14.55 mbsf - 14.5 kya)", 
+                                    "Synthetic 18% (61.5 mbsf - 214 kya)", 
+                                    "Combined 18% (61.5 mbsf - 214 kya)", 
+                                    "Synthetic 100%" )) +
   labs(y = "Sensitivity (Recall)", x = "Input Fragment Amount") +
   stat_pvalue_manual(
     dunn_sig_sensitivity,
@@ -163,10 +179,11 @@ plot_sensitivity <- ggplot(ppv_df, aes(x = complexity, y = sensitivity,
   theme(
     panel.grid = element_blank(),
     legend.position = "bottom", 
-    strip.text = element_text(size = 9))
+    strip.text = element_text(size = 12))
+
 plot_sensitivity # review plot before saving
 
-ggsave("Sensitivity_by_complexity.png", plot_sensitivity, width = 10, height = 6, dpi = 300)
+ggsave("Sensitivity_by_complexity.png", plot_sensitivity, width = 11, height = 6, dpi = 300)
 
 # ==========================================================
 # Plot F1
@@ -179,19 +196,29 @@ plot_f1 <- ggplot(ppv_df, aes(x = complexity, y = F1,
   stat_summary(fun = median, geom = "line", size = 1) +
   stat_summary(fun.data = median_hilow, geom = "errorbar", width = 0.2) +
   facet_wrap(~rank, scales = "free_y") +
+  scale_colour_viridis_d(option = "C", name = "Damage Level Treatment",
+                         labels = c("Synthetic 0%", 
+                                    "Synthetic 3% (0 mbsf - 0 kya)",
+                                    "Combined 3% (0 mbsf - 0 kya)", 
+                                    "Synthetic 7% (14.55 mbsf - 14.5 kya)", 
+                                    "Combined 7% (14.55 mbsf - 14.5 kya)", 
+                                    "Synthetic 18% (61.5 mbsf - 214 kya)", 
+                                    "Combined 18% (61.5 mbsf - 214 kya)", 
+                                    "Synthetic 100%" ))+
   mytheme_bigheatmap_facetgrid_light +
   theme(
     panel.grid = element_blank(),
     legend.position = "bottom", 
-    strip.text = element_text(size = 9)) +
+    strip.text = element_text(size = 12)) +
   labs(y = "F1 Score", x = "Input Fragment Amount") +
   stat_pvalue_manual(
     dunn_sig_f1,
     label = "p.adj.signif",
     hide.ns = TRUE
   )
+
 plot_f1 # review plot before saving
-ggsave("F1_by_complexity.png", plot_f1, width = 10, height = 6, dpi = 300)
+ggsave("F1_by_complexity.png", plot_f1, width = 11, height = 6, dpi = 300)
 
 
 # ========================================
