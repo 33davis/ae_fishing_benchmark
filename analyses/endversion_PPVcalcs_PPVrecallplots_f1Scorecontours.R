@@ -299,200 +299,200 @@ ggplot() +
 # ============================================================
 # PPV / Recall Plotting Script with F1 Contours
 # ============================================================
-
-# -------------------------
-# Subset Data
-# -------------------------
-
-# 1. Synthetic-only damage types
-synthetic_df <- ppv_df %>%
-  filter(damage %in% c("no_damage", "all_damage", 
-                       "mudline_damage", "middle_damage", "bottom_damage"))
-# Labels for synthetic plot
-synthetic_damage_labels <- c("no_damage" = "0%", 
-                             "mudline_damage" = "3% (0 mbsf - 0 kya)", 
-                             "middle_damage" = "7% (14.55 mbsf - 14.5 kya)", 
-                             "bottom_damage" = "18% (61.5 mbsf - 214 kya)", 
-                             "all_damage" = "100%")
-
-# 2. Spiked-only damage types
-spiked_df <- ppv_df %>%
-  filter(damage %in% c("spiked_mudline_damage", 
-                       "spiked_middle_damage", "spiked_bottom_damage"))
-# Labels for spiked plot
-spiked_damage_labels <- c("spiked_mudline_damage" = "combined 3% (0 mbsf - 0 kya",
-                          "spiked_middle_damage" = "combined 7% (14.55 mbsf - 14.5 kya",
-                          "spiked_bottom_damage" = "combined 18% (61.5 mbsf - 214 kya)")
-
-# 3. Paired synthetic vs spiked damage
-paired_df <- ppv_df %>%
-  filter(damage %in% c("mudline_damage", "spiked_mudline_damage",
-                       "middle_damage", "spiked_middle_damage",
-                       "bottom_damage", "spiked_bottom_damage")) %>%
-  mutate(pair = case_when(
-    damage %in% c("mudline_damage", "spiked_mudline_damage") ~ "mudline",
-    damage %in% c("middle_damage", "spiked_middle_damage") ~ "middle",
-    damage %in% c("bottom_damage", "spiked_bottom_damage") ~ "bottom"
-  ))
-
-# Labels for paired plot
-paired_damage_labels <- c(
-  "mudline_damage"        = "3% (0 mbsf – 0 kya)",
-  "spiked_mudline_damage" = "Combined 3%",
-  "middle_damage"         = "7% (14.55 mbsf – 14.5 kya)",
-  "spiked_middle_damage"  = "Combined 7%",
-  "bottom_damage"         = "18% (61.5 mbsf – 214 kya)",
-  "spiked_bottom_damage"  = "Combined 18%")
-# ============================================================
-# PLOTS ;)
-# ============================================================
-
-############## 1. Synthetic-only ##################
-p_synthetic <- 
-  ggplot() +
-  # F1 score contours
-  geom_line(data = f1_contours,
-            aes(x = sensitivity, y = precision, group = F1),
-            linetype = "dashed", color = "black") +
-  # geom_text(data = f1_contours %>% group_by(F1) %>% slice_tail(n=1),
-  #           aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
-  #           hjust = -0.1, vjust = 0.5, size = 3, color = "grey40") +
-  geom_text(
-    data = f1_contours %>% group_by(F1) %>% slice_tail(n = 1),
-    aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
-    hjust = 0.8, vjust = -0.6, size = 3, color = "black")+
-  # Data curves: AUC curves colored by complexity
-  # geom_line(data = ppv_df,
-  #           aes(x = sensitivity, y = precision, color = complexity),
-  #           size = 1) +
-  
-  # Points at observed values
-  geom_point(data = synthetic_df,
-             aes(x = sensitivity, y = precision, color = complexity),
-             size = 4, position = "dodge") +
-  
-  # Facet by rank and damage
-  facet_grid(rank~ damage, labeller = labeller(damage = synthetic_damage_labels)) +
-  
-  scale_color_viridis_d(option = "C") +
-  labs(
-    #title = "Precision-Recall with F1 Score Contours",
-    x = "Sensitivity (Recall)",
-    y = "Precision (PPV)",
-    color = "Complexity") +
-  mytheme_bigheatmap_facetgrid_light +
-  theme(
-    panel.grid = element_blank(),
-    legend.position = "bottom", 
-    strip.text = element_text(size = 12))
-
-print(p_synthetic)
-###################### 2. Spiked-only ################
-p_spiked <- 
-  ggplot() +
-  # F1 score contours
-  geom_line(data = f1_contours,
-            aes(x = sensitivity, y = precision, group = F1),
-            linetype = "dashed", color = "grey50") +
-  # geom_text(data = f1_contours %>% group_by(F1) %>% slice_tail(n=1),
-  #           aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
-  #           hjust = -0.1, vjust = 0.5, size = 3, color = "grey40") +
-  geom_text(
-    data = f1_contours %>% group_by(F1) %>% slice_tail(n = 1),
-    aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
-    hjust = 0.9, vjust = 0.9, size = 2, color = "grey40")+
-  # Data curves: AUC curves colored by complexity
-  # geom_line(data = ppv_df,
-  #           aes(x = sensitivity, y = precision, color = complexity),
-  #           size = 1) +
-  
-  # Points at observed values
-  geom_point(data = spiked_df,
-             aes(x = sensitivity, y = precision, color = complexity),
-             size = 2) +
-  
-  # Facet by rank and damage
-  facet_grid(rank ~ damage, labeller = labeller(damage = spiked_damage_labels)) +
-  
-  scale_color_viridis_d(option = "C") +
-  labs(
-    #title = "Precision-Recall with F1 Score Contours",
-    x = "Sensitivity (Recall)",
-    y = "Precision (PPV)",
-    color = "Complexity"
-  ) +
-  mytheme_bigheatmap_facetgrid +
-  theme(
-    panel.grid = element_blank(),
-    legend.position = "bottom", 
-    strip.text = element_text(size = 9))
-
-################## 3. Paired comparisons #####################
-
-p_paired <-
-  ggplot() +
-  # F1 score contours
-  geom_line(data = f1_contours,
-            aes(x = sensitivity, y = precision, group = F1),
-            linetype = "dashed", color = "grey50") +
-  # geom_text(data = f1_contours %>% group_by(F1) %>% slice_tail(n=1),
-  #           aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
-  #           hjust = -0.1, vjust = 0.5, size = 3, color = "grey40") +
-  geom_text(
-    data = f1_contours %>% group_by(F1) %>% slice_tail(n = 1),
-    aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
-    hjust = 0.9, vjust = 0.9, size = 2, color = "grey40")+
-  # Data curves: AUC curves colored by complexity
-  # geom_line(data = ppv_df,
-  #           aes(x = sensitivity, y = precision, color = complexity),
-  #           size = 1) +
-  
-  # Points at observed values
-  geom_point(data = paired_df,
-             aes(x = sensitivity, y = precision, color = complexity),
-             size = 2) +
-  
-  # Facet by rank and damage
-  facet_grid(rank ~ damage, labeller = labeller(damage = paired_damage_labels)) +
-  
-  scale_color_viridis_d(option = "C") +
-  labs(
-    #title = "Precision-Recall with F1 Score Contours",
-    x = "Sensitivity (Recall)",
-    y = "Precision (PPV)",
-    color = "Complexity"
-  ) +
-  mytheme_bigheatmap_facetgrid +
-  theme(
-    panel.grid = element_blank(),
-    legend.position = "bottom", 
-    strip.text = element_text(size = 9))
-# ============================================================
-# INTERPRETATION NOTES (COMMENTED)
-# ============================================================
-# - Synthetic plots: compare performance of classifiers under different 
-#   artificial ("clean") damage scenarios. Helps establish baseline.
-# - Spiked plots: show effect of additional spiked complexity.
-# - Paired plots: directly contrast synthetic vs spiked for mudline, middle, 
-#   and bottom. Useful for identifying performance degradation or improvement.
-# - F1 contours: lines of equal balance between PPV and recall (via F1).
-#   Higher F1 contour levels indicate better overall performance.
-# - Color (complexity): complexity level of analysis (e.g., species/genus/family).
-#   Comparing colors within a facet shows how complexity influences outcomes.
-
-# ============================================================
-# Example: Print plots
-# ============================================================
-print(p_synthetic)
-print(p_spiked)
-print(p_paired)
-
-# ================================================================
-# Output: arrange plots or save individually
-# ================================================================
-
-# Example to display them together if you have patchwork:
-p_synthetic / p_spiked / p_paired
+# 
+# # -------------------------
+# # Subset Data
+# # -------------------------
+# 
+# # 1. Synthetic-only damage types
+# synthetic_df <- ppv_df %>%
+#   filter(damage %in% c("no_damage", "all_damage", 
+#                        "mudline_damage", "middle_damage", "bottom_damage"))
+# # Labels for synthetic plot
+# synthetic_damage_labels <- c("no_damage" = "0%", 
+#                              "mudline_damage" = "3% (0 mbsf - 0 kya)", 
+#                              "middle_damage" = "7% (14.55 mbsf - 14.5 kya)", 
+#                              "bottom_damage" = "18% (61.5 mbsf - 214 kya)", 
+#                              "all_damage" = "100%")
+# 
+# # 2. Spiked-only damage types
+# spiked_df <- ppv_df %>%
+#   filter(damage %in% c("spiked_mudline_damage", 
+#                        "spiked_middle_damage", "spiked_bottom_damage"))
+# # Labels for spiked plot
+# spiked_damage_labels <- c("spiked_mudline_damage" = "combined 3% (0 mbsf - 0 kya",
+#                           "spiked_middle_damage" = "combined 7% (14.55 mbsf - 14.5 kya",
+#                           "spiked_bottom_damage" = "combined 18% (61.5 mbsf - 214 kya)")
+# 
+# # 3. Paired synthetic vs spiked damage
+# paired_df <- ppv_df %>%
+#   filter(damage %in% c("mudline_damage", "spiked_mudline_damage",
+#                        "middle_damage", "spiked_middle_damage",
+#                        "bottom_damage", "spiked_bottom_damage")) %>%
+#   mutate(pair = case_when(
+#     damage %in% c("mudline_damage", "spiked_mudline_damage") ~ "mudline",
+#     damage %in% c("middle_damage", "spiked_middle_damage") ~ "middle",
+#     damage %in% c("bottom_damage", "spiked_bottom_damage") ~ "bottom"
+#   ))
+# 
+# # Labels for paired plot
+# paired_damage_labels <- c(
+#   "mudline_damage"        = "3% (0 mbsf – 0 kya)",
+#   "spiked_mudline_damage" = "Combined 3%",
+#   "middle_damage"         = "7% (14.55 mbsf – 14.5 kya)",
+#   "spiked_middle_damage"  = "Combined 7%",
+#   "bottom_damage"         = "18% (61.5 mbsf – 214 kya)",
+#   "spiked_bottom_damage"  = "Combined 18%")
+# # ============================================================
+# # PLOTS ;)
+# # ============================================================
+# 
+# ############## 1. Synthetic-only ##################
+# p_synthetic <- 
+#   ggplot() +
+#   # F1 score contours
+#   geom_line(data = f1_contours,
+#             aes(x = sensitivity, y = precision, group = F1),
+#             linetype = "dashed", color = "black") +
+#   # geom_text(data = f1_contours %>% group_by(F1) %>% slice_tail(n=1),
+#   #           aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
+#   #           hjust = -0.1, vjust = 0.5, size = 3, color = "grey40") +
+#   geom_text(
+#     data = f1_contours %>% group_by(F1) %>% slice_tail(n = 1),
+#     aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
+#     hjust = 0.8, vjust = -0.6, size = 3, color = "black")+
+#   # Data curves: AUC curves colored by complexity
+#   # geom_line(data = ppv_df,
+#   #           aes(x = sensitivity, y = precision, color = complexity),
+#   #           size = 1) +
+#   
+#   # Points at observed values
+#   geom_point(data = synthetic_df,
+#              aes(x = sensitivity, y = precision, color = complexity),
+#              size = 4, position = "dodge") +
+#   
+#   # Facet by rank and damage
+#   facet_grid(rank~ damage, labeller = labeller(damage = synthetic_damage_labels)) +
+#   
+#   scale_color_viridis_d(option = "C") +
+#   labs(
+#     #title = "Precision-Recall with F1 Score Contours",
+#     x = "Sensitivity (Recall)",
+#     y = "Precision (PPV)",
+#     color = "Complexity") +
+#   mytheme_bigheatmap_facetgrid_light +
+#   theme(
+#     panel.grid = element_blank(),
+#     legend.position = "bottom", 
+#     strip.text = element_text(size = 12))
+# 
+# print(p_synthetic)
+# ###################### 2. Spiked-only ################
+# p_spiked <- 
+#   ggplot() +
+#   # F1 score contours
+#   geom_line(data = f1_contours,
+#             aes(x = sensitivity, y = precision, group = F1),
+#             linetype = "dashed", color = "grey50") +
+#   # geom_text(data = f1_contours %>% group_by(F1) %>% slice_tail(n=1),
+#   #           aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
+#   #           hjust = -0.1, vjust = 0.5, size = 3, color = "grey40") +
+#   geom_text(
+#     data = f1_contours %>% group_by(F1) %>% slice_tail(n = 1),
+#     aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
+#     hjust = 0.9, vjust = 0.9, size = 2, color = "grey40")+
+#   # Data curves: AUC curves colored by complexity
+#   # geom_line(data = ppv_df,
+#   #           aes(x = sensitivity, y = precision, color = complexity),
+#   #           size = 1) +
+#   
+#   # Points at observed values
+#   geom_point(data = spiked_df,
+#              aes(x = sensitivity, y = precision, color = complexity),
+#              size = 2) +
+#   
+#   # Facet by rank and damage
+#   facet_grid(rank ~ damage, labeller = labeller(damage = spiked_damage_labels)) +
+#   
+#   scale_color_viridis_d(option = "C") +
+#   labs(
+#     #title = "Precision-Recall with F1 Score Contours",
+#     x = "Sensitivity (Recall)",
+#     y = "Precision (PPV)",
+#     color = "Complexity"
+#   ) +
+#   mytheme_bigheatmap_facetgrid +
+#   theme(
+#     panel.grid = element_blank(),
+#     legend.position = "bottom", 
+#     strip.text = element_text(size = 9))
+# 
+# ################## 3. Paired comparisons #####################
+# 
+# p_paired <-
+#   ggplot() +
+#   # F1 score contours
+#   geom_line(data = f1_contours,
+#             aes(x = sensitivity, y = precision, group = F1),
+#             linetype = "dashed", color = "grey50") +
+#   # geom_text(data = f1_contours %>% group_by(F1) %>% slice_tail(n=1),
+#   #           aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
+#   #           hjust = -0.1, vjust = 0.5, size = 3, color = "grey40") +
+#   geom_text(
+#     data = f1_contours %>% group_by(F1) %>% slice_tail(n = 1),
+#     aes(x = sensitivity, y = precision, label = paste0("F1=", F1)),
+#     hjust = 0.9, vjust = 0.9, size = 2, color = "grey40")+
+#   # Data curves: AUC curves colored by complexity
+#   # geom_line(data = ppv_df,
+#   #           aes(x = sensitivity, y = precision, color = complexity),
+#   #           size = 1) +
+#   
+#   # Points at observed values
+#   geom_point(data = paired_df,
+#              aes(x = sensitivity, y = precision, color = complexity),
+#              size = 2) +
+#   
+#   # Facet by rank and damage
+#   facet_grid(rank ~ damage, labeller = labeller(damage = paired_damage_labels)) +
+#   
+#   scale_color_viridis_d(option = "C") +
+#   labs(
+#     #title = "Precision-Recall with F1 Score Contours",
+#     x = "Sensitivity (Recall)",
+#     y = "Precision (PPV)",
+#     color = "Complexity"
+#   ) +
+#   mytheme_bigheatmap_facetgrid +
+#   theme(
+#     panel.grid = element_blank(),
+#     legend.position = "bottom", 
+#     strip.text = element_text(size = 9))
+# # ============================================================
+# # INTERPRETATION NOTES (COMMENTED)
+# # ============================================================
+# # - Synthetic plots: compare performance of classifiers under different 
+# #   artificial ("clean") damage scenarios. Helps establish baseline.
+# # - Spiked plots: show effect of additional spiked complexity.
+# # - Paired plots: directly contrast synthetic vs spiked for mudline, middle, 
+# #   and bottom. Useful for identifying performance degradation or improvement.
+# # - F1 contours: lines of equal balance between PPV and recall (via F1).
+# #   Higher F1 contour levels indicate better overall performance.
+# # - Color (complexity): complexity level of analysis (e.g., species/genus/family).
+# #   Comparing colors within a facet shows how complexity influences outcomes.
+# 
+# # ============================================================
+# # Example: Print plots
+# # ============================================================
+# print(p_synthetic)
+# print(p_spiked)
+# print(p_paired)
+# 
+# # ================================================================
+# # Output: arrange plots or save individually
+# # ================================================================
+# 
+# # Example to display them together if you have patchwork:
+# p_synthetic / p_spiked / p_paired
 
 ###################### extra version ##############
 #this is a draft script for PPV plotting and visualization
@@ -943,3 +943,18 @@ print(p_paired)
 
 # Example to display them together if you have patchwork:
 p_synthetic / p_spiked / p_paired
+
+
+#save plots individually as svg files publication
+library(svglite)
+svglite("ppv_synthetic_plot.svg", width = 8, height = 6)
+print(p_synthetic)
+dev.off()
+
+svglite("ppv_spiked_plot.svg", width = 8, height = 6)
+print(p_spiked)
+dev.off()
+
+svglite("ppv_paired_plot.svg", width = 8, height = 6)
+print(p_paired)
+dev.off()
